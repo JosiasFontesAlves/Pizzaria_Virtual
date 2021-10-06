@@ -1,0 +1,10 @@
+.carrinho {
+    width: fit-content;
+    display: grid;
+}
+
+.carrinho_pizzas {
+    text-align: center;
+    margin: 5px;
+    width: 300px;
+}

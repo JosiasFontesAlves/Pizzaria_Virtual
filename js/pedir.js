@@ -1,7 +1,6 @@
 import pizzas from "./pizzas.js";
 import { render, selek, selekFn, seleKlass } from "./lib7.js";
 import { Button, Card, CardLink } from "./components.js";
-import finalizarPedido from "./pages/finalizarPedido.js";
 
 export default () => {
     const root = selek('root'),
