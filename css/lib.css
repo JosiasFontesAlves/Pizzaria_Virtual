@@ -1,0 +1,74 @@
+/*  
+    * * * * * * * * * * * * *     * * * * * * * * *    * * * * * * * * * *    * * * * * * * * *     * * * * * * * * * * 
+    * * * * * * * * * * * * *     * * * * * * * * *    * * * * * * * * * *    * * * * * * * * *     * * * * * * * * * * 
+    * *                   * *     * *           * *            * *            * *                   * *             * *  
+    * *        * *        * *     * * * * * * * * *            * *            * * * * * * * * *     * *     * *     * * 
+    * *        * *        * *     * * * * * * * * *            * *            * * * * * * * * *     * *     * *     * * 
+    * *        * *        * *     * *           * *            * *                          * *     * *             * * 
+    * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
+    * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap'); /* Quantico */
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap'); /* Michroma */
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap'); /* Electrolize */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap'); /* Black Ops */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Press start 2P */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap'); /* Ubuntu */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap'); /* Orbitron */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap'); /* Work Sans */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap'); /* Roboto mono */
+
+* {
+    margin: auto;
+}
+
+:root {
+    --sand: #fadcb0;
+    --neon: 1px 1px 10px 2px;
+    --neon2: 2px 2px 7px;
+    --vidro: #cfcfcfbb;
+    --sombra: 5px 2px 5px;
+    --ghost_bg: #50505080;
+    --nardoGray: #d3d3d3;
+    --oceanicBlue: #00ccff;
+    --oceanicGreen: #01f870;
+}
+
+.blur {
+    background: var(--ghost_bg);
+    backdrop-filter: blur(2px);
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+.fix {
+    position: fixed;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
+.h50 {
+    height: 50%;
+}
+
+.h100 {
+    height: 100vh;
+}
+
+.w50 {
+    width: 50%;
+}
+
+.w100 {
+    width: 100%;
+}

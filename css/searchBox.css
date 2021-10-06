@@ -1,0 +1,26 @@
+h2 {
+    text-align: center;
+}
+
+h2, #txt {
+    padding: 5px;
+}
+
+#txt {
+    border: 2px solid var(--vidro);
+    border-radius: 15px;
+    box-shadow: var(--sombra) var(--vidro);
+    outline: none;
+    width: 70vw;
+}
+
+#ok {
+    background: var(--nardoGray);
+    border: 3px solid #929292;
+    border-radius: 50%;
+    box-shadow: -5px 2px 7px #42424252;
+    height: 45px;
+    outline: none;
+    transform: translateX(-3vw);
+    width: 45px;
+}

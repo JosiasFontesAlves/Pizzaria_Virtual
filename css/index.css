@@ -1,0 +1,29 @@
+* {
+    font-family: 'work sans', sans-serif;
+    text-shadow: var(--neon2) var(--ghost_bg);
+    transition: 0.5s;
+}
+
+body {
+    flex-wrap: wrap;
+}
+
+.pizzas {
+    border: 1px solid var(--vidro);
+    border-radius: 10px;
+    box-shadow: 3px 5px 5px 2px var(--ghost_bg);
+    margin: 20px;
+}
+
+.sabores, li, footer {
+    padding: 5px;
+}
+
+footer, .sabores, #pedir {
+    text-align: center;
+}
+
+footer {
+    bottom: 0;
+    font-size: 8px;
+}
