@@ -5,10 +5,13 @@ import { Button, Card, CardLink } from "./components.js";
 export default () => {
     const root = selek('root'),
         { value: nome } = selek('txt'),
-        cardLink = selek('card-link');
+        cardLink = selek('card-link'),
+        carrinho = {},
+        span = num => selek(`num_${num}`),
+        setCarrinho = id => Number(span(id).innerHTML);
 
     cardLink.hidden = false;
-    
+
     root.style.marginTop = '50px';
     root.innerHTML = '';
     root.appendChild(
@@ -24,7 +27,7 @@ export default () => {
                     render({ p: { id: `pizza_${ctrl++}`, class: 'pizza' } }, pizza),
                     Card('btn', [
                         Button(`btn_menos_${ctrl}`, 'menos', '-'),
-                        render({ span: { id: `num_${ctrl}` } }, '0'),
+                        render({ span: { id: `num_${ctrl}`, class: 'span_pizzas' } }, '0'),
                         Button(`btn_mais_${ctrl}`, 'mais', '+')
                     ])
                 ])
@@ -32,15 +35,25 @@ export default () => {
         });
     }
 
-    const span = num => selek(`num_${num}`);
-
     // Adiciona pizzas no carrinho
-    [...seleKlass('mais')].map(({ id }) => selekFn(id, 'click', () => span(id[9]).innerHTML = Number(span(id[9]).innerHTML) + 1));
+    [...seleKlass('mais')].forEach(({ id }) => {
+        selekFn(id, 'click', () => {
+            span(id[9]).innerHTML = setCarrinho(id[9]) + 1;
+
+            carrinho[selek(`pizza_${id[9] - 1}`).innerHTML] = setCarrinho(id[9]);
+        });
+    });
 
     // Remove-as do carrinho
-    [...seleKlass('menos')].map(({ id }) => selekFn(id, 'click', () => {
-        if (span(id[10]).innerHTML > 0) span(id[10]).innerHTML = Number(span(id[10]).innerHTML) - 1;
-    }));
+    [...seleKlass('menos')].forEach(({ id }) => {
+        selekFn(id, 'click', () => {
+            if (span(id[10]).innerHTML > 0) {
+                span(id[10]).innerHTML = setCarrinho(id[10]) - 1;
+
+                carrinho[selek(`pizza_${id[10] - 1}`).innerHTML] = setCarrinho(id[10]);
+            };
+        })
+    });
 
     CardLink('Para finalizar o pedido Clique ', '#finalizarPedido');
 }

@@ -14,7 +14,8 @@ sElem('footer').appendChild(
 );
 
 window.onload = () => {
-    home();
+    //home();
+    pedido()
 
     const pages = {
         '#home': home,

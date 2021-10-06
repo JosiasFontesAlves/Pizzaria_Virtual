@@ -1,5 +1,10 @@
 import { render, selek } from "./lib7.js";
 
+/**
+ * @param {string} className 
+ * @param {string} content 
+ * @returns {HTMLDivElement}
+ */
 export const Card = (className, content) => {
     const card = render({ div: { class: `card flex ${className}` } });
     card.append(...content);
@@ -7,6 +12,12 @@ export const Card = (className, content) => {
     return card;
 }
 
+/**
+ * @param {string} id 
+ * @param {string} className 
+ * @param {string} content 
+ * @returns {HTMLButtonElement}
+ */
 export const Button = (id, className, content) => {
 
     const button = render({ button: {id: id, class: className } }, content);
