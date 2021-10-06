@@ -1,5 +1,5 @@
 import pizzas from "./pizzas.js";
-import { render, selek, seleKlass } from "./lib7.js";
+import { render, selek, selekFn, seleKlass } from "./lib7.js";
 import { Button, Card } from "./components.js";
 
 export default () => {
@@ -29,18 +29,15 @@ export default () => {
         });
     }
 
+    const span = num => selek(`num_${num}`);
+
     // Adiciona pizzas no carrinho
-    [...seleKlass('mais')].map(btn => btn.onclick = function () {
-        const span = selek(`num_${this.id[9]}`);
-        span.innerHTML = Number(span.innerHTML) + 1;
-    });
+    [...seleKlass('mais')].map(({ id }) => selekFn(id, 'click', () => span(id[9]).innerHTML = Number(span(id[9]).innerHTML) + 1));
 
     // Remove-as do carrinho
-    [...seleKlass('menos')].map(btn => btn.onclick = function () {
-        const span = selek(`num_${this.id[10]}`);
-        
-        if (span.innerHTML > 0) span.innerHTML = Number(span.innerHTML) - 1;
-    });
+    [...seleKlass('menos')].map(({ id }) => selekFn(id, 'click', () => {
+        if (span(id[10]).innerHTML > 0) span(id[10]).innerHTML = Number(span(id[10]).innerHTML) - 1;
+    }));
 
     root.appendChild(
         Card('link', [
