@@ -2,7 +2,7 @@ import { render, selek } from "./lib7.js";
 
 /**
  * @param {string} className 
- * @param {string} content 
+ * @param {Array<string | HTMLElement>} content 
  * @returns {HTMLDivElement}
  */
 export const Card = (className, content) => {

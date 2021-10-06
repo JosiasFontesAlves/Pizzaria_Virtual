@@ -8,6 +8,10 @@ body {
     flex-wrap: wrap;
 }
 
+#container-pizzas {
+    margin-top: 10px;
+}
+
 .pizzas {
     border: 1px solid var(--vidro);
     border-radius: 10px;
