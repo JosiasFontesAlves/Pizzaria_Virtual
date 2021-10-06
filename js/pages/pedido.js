@@ -4,6 +4,8 @@ import {
 } from "../lib7.js";
 
 export default () => {
+    selek('card-link').hidden = true;
+    
     kreatto({
         '#root': [
             { 'h2': { id: 'sdc' } }
@@ -30,6 +32,4 @@ export default () => {
             setTimeout(pedir, 520);
         }
     });
-
-    pedir();
 }

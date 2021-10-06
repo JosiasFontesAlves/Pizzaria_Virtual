@@ -1,13 +1,16 @@
 import pizzas from "./pizzas.js";
 import { render, selek, selekFn, seleKlass } from "./lib7.js";
-import { Button, Card } from "./components.js";
+import { Button, Card, CardLink } from "./components.js";
 
 export default () => {
     const root = selek('root'),
-        { value: nome } = selek('txt');
+        { value: nome } = selek('txt'),
+        cardLink = selek('card-link');
 
+    cardLink.hidden = false;
+    
+    root.style.marginTop = '50px';
     root.innerHTML = '';
-
     root.appendChild(
         render({ h2: { class: 'fix w100', id: 'nome' } }, `Olá ${nome}! Qual é o seu pedido?`)
     );
@@ -39,10 +42,5 @@ export default () => {
         if (span(id[10]).innerHTML > 0) span(id[10]).innerHTML = Number(span(id[10]).innerHTML) - 1;
     }));
 
-    root.appendChild(
-        Card('link', [
-            render('span', 'Para finalizar o pedido Clique'),
-            render({ a: { href: '#finalizarPedido' } }, 'aqui!')
-        ])
-    );
+    CardLink('Para finalizar o pedido Clique ', '#finalizarPedido');
 }

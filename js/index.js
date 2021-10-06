@@ -3,9 +3,9 @@ import home from "./pages/home.js";
 import pedido from "./pages/pedido.js";
 import finalizarPedido from "./pages/finalizarPedido.js";
 
-
 templatr(
     { div: { id: 'root' } },
+    { div: { id: 'card-link', class: 'w100' } },
     { footer: { class: 'fix w100' } }
 );
 
@@ -14,17 +14,16 @@ sElem('footer').appendChild(
 );
 
 window.onload = () => {
-    //home();
-    pedido();
+    home();
 
     const pages = {
         '#home': home,
         '#pedido': pedido,
-        '#finalizarPedido' : finalizarPedido
+        '#finalizarPedido': finalizarPedido
     }
 
     window.onhashchange = () => {
-        selek('root').innerHTML = '';
+        ['root', 'card-link'].forEach(el => selek(el).innerHTML = '');
 
         pages[location.hash]();
     }

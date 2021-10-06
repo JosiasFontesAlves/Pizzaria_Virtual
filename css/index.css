@@ -19,8 +19,21 @@ body {
     padding: 5px;
 }
 
-footer, .sabores, #pedir {
+footer, .sabores, #pedir, #card-link {
     text-align: center;
+}
+
+#card-link {
+    margin-bottom: 55px;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--oceanicBlue);
 }
 
 footer {
