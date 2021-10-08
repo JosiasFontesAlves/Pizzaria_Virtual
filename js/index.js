@@ -16,7 +16,8 @@ sElem('footer').appendChild(
 window.onload = () => {
     localStorage.removeItem('carrinho');
 
-    home();
+    pedido()
+    //home();
 
     const pages = {
         '#home': home,

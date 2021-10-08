@@ -1,6 +1,12 @@
 import { render, selek } from "./lib7.js";
 
 /**
+ * @param {[object | string]} component 
+ * @returns {HTMLElement}
+ */
+const Component = (component, content) => render(component, content);
+
+/**
  * @param {string} className 
  * @param {Array<string | HTMLElement>} content 
  * @returns {HTMLDivElement}
@@ -18,12 +24,7 @@ export const Card = (className, content) => {
  * @param {string} content 
  * @returns {HTMLButtonElement}
  */
-export const Button = (id, className, content) => {
-
-    const button = render({ button: {id: id, class: className } }, content);
-
-    return button;
-}
+export const Button = (id, className, content) => Component({ button: {id: id, class: className } }, content);
 
 export const CardLink = (txt, link) => {
     selek('card-link').append(
@@ -31,3 +32,11 @@ export const CardLink = (txt, link) => {
         render({ a: { href: link } }, 'aqui!')
     );
 }
+
+/**
+ * @param {string} id 
+ * @param {string} className 
+ * @param {string} content 
+ * @returns {HTMLSpanElement}
+ */
+export const Span = (id, className, content) => Component({ span: { id: id, class: className } }, content);

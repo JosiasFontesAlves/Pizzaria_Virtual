@@ -4,27 +4,34 @@
     top: 0;
 }
 
-p {
+.pizzas_valor, .carrinho {
     margin-left: 0;
 }
 
 .container:not(#container-pizzas) {
     border-bottom: 1px solid;
     margin: 3px;
-    width: 218px;
+    width: 300px;
+}
+
+.pizzas_valor * {
+    padding: 7px;
 }
 
 button {
-    background: var(--nardoGray);
-    border: 1px solid var(--vidro);
+    background: none;
+    border: none;
     border-radius: 5px;
-    box-shadow: 3px 3px 5px #7c7c7c;
+    cursor: pointer;
     margin: 7px;
 }
 
+.btn * {
+    text-shadow: 2px 2px 2px var(--ghost_bg);
+}
+
 button:hover {
-    background: var(--oceanicBlue);
-    color: white;
+    color: red;
 }
 
 .btn {
