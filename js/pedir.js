@@ -22,7 +22,7 @@ export default () => {
         const preços = {
             Tradicionais: 25,
             Doces: 25,
-            Especiais: 35 
+            Especiais: 35
         }
 
         sabor.forEach(pizza => {
@@ -43,6 +43,9 @@ export default () => {
     }
 
     carrinho();
+
+    const { innerText } = selek('valor_1'),
+    getIndex = (from, to) => [from, to].map(i => innerText.indexOf(i));
 
     CardLink('Para finalizar o pedido Clique ', '#finalizarPedido');
 }

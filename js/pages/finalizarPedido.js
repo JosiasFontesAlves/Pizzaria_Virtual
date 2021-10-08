@@ -1,25 +1,22 @@
-import { Card } from "../components.js";
+import { Card, Link } from "../components.js";
 import { render, selek } from "../lib7.js";
-//import pizzas from "../pizzas.js";
+import calcularValorTotal from "../valorTotal.js";
 
 export default () => {
     const root = selek('root'),
         getCarrinho = JSON.parse(localStorage.getItem('carrinho')),
         res = [];
 
-    selek('card-link').hidden = true;
-
     root.innerHTML = '';
 
     let ctrl = 0;
 
     for (let pizza in getCarrinho) {
-
         if (getCarrinho[pizza] != 0) {
             res.push(
                 render(
                     { p: { class: 'carrinho_pizzas', id: `item_${ctrl++}` } },
-                    `${pizza} * ${getCarrinho[pizza]} unidade${getCarrinho[pizza] > 1 ? 's' : ''}`
+                    `${pizza} - ${getCarrinho[pizza]} unidade${getCarrinho[pizza] > 1 ? 's' : ''}`
                 )
             );
         }
@@ -27,18 +24,20 @@ export default () => {
 
     //TODO -> Calcular o preço final
 
-    
-
     root.appendChild(
         Card('carrinho', [
             render('h1', 'Você escolheu:'),
             ...res,
-            render('h3', 'O pedido está correto?'),
-            render({ a: { href: '#pedido' } }, 'Não, quero mudar o pedido')
+            render({ section: { class: 'carrinho_pizzas flex', id: 'valorTotal' } })
+
         ])
     );
 
-    const {innerText } = selek('item_0');
+    calcularValorTotal();
 
-    console.log(innerText.substring(innerText.indexOf('$'), innerText.indexOf('u')));
+    selek('card-link').append(
+        render('h3', 'O pedido está correto?'),
+        Link('#confirmarPedido', 'Tudo ok!, Podemos continuar'),
+        Link('#pedido', 'Não, quero mudar o pedido')
+    );
 }

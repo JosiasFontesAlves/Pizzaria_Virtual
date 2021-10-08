@@ -24,7 +24,7 @@ export const Card = (className, content) => {
  * @param {string} content 
  * @returns {HTMLButtonElement}
  */
-export const Button = (id, className, content) => Component({ button: {id: id, class: className } }, content);
+export const Button = (id, className, content) => Component({ button: { id: id, class: className } }, content);
 
 export const CardLink = (txt, link) => {
     selek('card-link').append(
@@ -40,3 +40,10 @@ export const CardLink = (txt, link) => {
  * @returns {HTMLSpanElement}
  */
 export const Span = (id, className, content) => Component({ span: { id: id, class: className } }, content);
+
+/**
+ * @param {string} url 
+ * @param {string} content 
+ * @returns {HTMLAnchorElement}
+ */
+export const Link = (url, content) => render({ a: {class: 'links', href: url } }, content);

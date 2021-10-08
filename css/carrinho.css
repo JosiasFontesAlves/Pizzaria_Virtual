@@ -4,7 +4,16 @@
 }
 
 .carrinho_pizzas {
-    text-align: left;
     margin: 5px;
+    text-align: center;
     width: 320px;
+}
+
+#valorTotal {
+    border-top: 2px dashed;
+    margin: 25px 0;
+}
+
+.links {
+   padding: 15px;
 }
