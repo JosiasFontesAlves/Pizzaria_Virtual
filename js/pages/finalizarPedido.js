@@ -1,6 +1,6 @@
 import { Card } from "../components.js";
 import { render, selek } from "../lib7.js";
-import pizzas from "../pizzas.js";
+//import pizzas from "../pizzas.js";
 
 export default () => {
     const root = selek('root'),
@@ -11,16 +11,23 @@ export default () => {
 
     root.innerHTML = '';
 
+    let ctrl = 0;
+
     for (let pizza in getCarrinho) {
-        Object.keys(pizzas).map(sabor => console.log(sabor));
+
         if (getCarrinho[pizza] != 0) {
             res.push(
-                render({ p: { class: 'carrinho_pizzas' } }, `${pizza} - ${getCarrinho[pizza]} unidade${getCarrinho[pizza] > 1 ? 's' : ''}`)
+                render(
+                    { p: { class: 'carrinho_pizzas', id: `item_${ctrl++}` } },
+                    `${pizza} * ${getCarrinho[pizza]} unidade${getCarrinho[pizza] > 1 ? 's' : ''}`
+                )
             );
         }
     }
 
-    //TODO -> Adicionar o valor das pizzas e calcular o preço final
+    //TODO -> Calcular o preço final
+
+    
 
     root.appendChild(
         Card('carrinho', [
@@ -30,4 +37,8 @@ export default () => {
             render({ a: { href: '#pedido' } }, 'Não, quero mudar o pedido')
         ])
     );
+
+    const {innerText } = selek('item_0');
+
+    console.log(innerText.substring(innerText.indexOf('$'), innerText.indexOf('u')));
 }

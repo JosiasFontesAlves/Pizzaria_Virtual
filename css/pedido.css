@@ -18,6 +18,10 @@
     padding: 7px;
 }
 
+.span_pizzas {
+    margin-right: 0;
+}
+
 button {
     background: none;
     border: none;
