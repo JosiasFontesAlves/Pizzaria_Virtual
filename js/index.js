@@ -9,15 +9,12 @@ templatr(
     { footer: { class: 'fix w100' } }
 );
 
-sElem('footer').appendChild(
-    render({ p: { id: 'copyright' } }, 'Matsa \u00A9 2021 - Josias Fontes Alves')
-);
+sElem('footer').appendChild(render({ p: { id: 'copyright' } }, 'Matsa \u00A9 2021 - Josias Fontes Alves'));
 
 window.onload = () => {
     localStorage.removeItem('carrinho');
 
-    pedido()
-    //home();
+    home();
 
     const pages = {
         '#home': home,

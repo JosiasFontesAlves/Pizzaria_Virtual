@@ -8,15 +8,12 @@ body {
     flex-wrap: wrap;
 }
 
-#container-pizzas {
-    margin-top: 10px;
+.sabores {
+    border-bottom: 2px dashed;
 }
 
 .pizzas {
-    border: 1px solid var(--vidro);
-    border-radius: 10px;
-    box-shadow: 3px 5px 5px 2px var(--ghost_bg);
-    margin: 20px;
+    margin: 10px;
 }
 
 .sabores, li, footer {
