@@ -9,7 +9,7 @@
  * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
  */
 
-let versão = '2.8.2';
+let versão = '2.8.5';
 
 /** 
  * @param {string} local
@@ -188,7 +188,7 @@ export function kreatto() {
         for (let elem in arg) {
             const res = [];
             for (let tag of arg[elem]) { // Cria os componentes
-                res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)));
+                res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]));
                 res.forEach((el, i) => {
                     if (typeof arg[elem][i] === 'object') {
                         for (let key in arg[elem][i]) // Caso sejam objetos aninhados, adiciona os atributos
@@ -204,15 +204,14 @@ export function kreatto() {
 // IMPORTANTE! --> Sempre usar o templatr no topo do código!
 
 export function templatr() {
-    const { body } = document, res = [];
-    [...arguments].forEach(elem => res.push(document.createElement(typeof elem === 'string' ? elem : Object.keys(elem))));
-    res.forEach((el, i) => {
-        if (typeof arguments[i] === 'object') {
-            for (let tag in arguments[i])
-                Object.entries(arguments[i][tag]).forEach(([atr, val]) => el.setAttribute(atr, val));
+    [...arguments].forEach(elem => {
+		const el = document.createElement(typeof elem === 'string' ? elem : Object.keys(elem)[0]);
+		if (typeof elem === 'object') {
+            for (let tag in elem)
+                Object.entries(elem[tag]).forEach(([atr, val]) => el.setAttribute(atr, val));
         }
-    });
-    body.append(...res);
+		document.body.appendChild(el);
+	});
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /** 
@@ -291,7 +290,7 @@ export function criarLista() {
         const res = [];
 
         lista.forEach((item, i) => {
-            res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)));
+            res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]));
             res[i].append(item);
 
             if (typeof tag === 'object') {
@@ -379,6 +378,7 @@ export function criarTabela(local, tabela) {
 
     tbody.append(...$tabela);
     table.append(thead, tbody);
+
     document.querySelector(local).appendChild(table);
 } /* --------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -394,7 +394,7 @@ export function addCSS([_urls]) {
  * @param {string} conteúdo
  */
 export function render(tag, conteúdo) {
-    const elem = document.createElement(typeof tag === 'string' ? tag : Object.keys(tag));
+    const elem = document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]);
 
     if (typeof tag === 'object') {
         for (let el in tag) Object.entries(tag[el]).forEach(([atr, val]) => elem.setAttribute(atr, val));
@@ -411,14 +411,13 @@ export function render(tag, conteúdo) {
  * @param {string | object} arguments._tag 
  * @param {number} arguments._qtde
  */
-export function Container([_local, _tag, _qtde, _idContainer, _idComponente]) {
-
+export function Container() {
     [...arguments].forEach(([local, tag, qtde, idContainer, idComponente], i) => {
         const res = [],
             container = document.createElement('section');
 
         for (let elem = 0; elem < qtde; elem++) // Cria os componentes
-            res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)));
+            res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]));
 
         if (typeof tag === 'object') {
             let ctrlId = 0;
