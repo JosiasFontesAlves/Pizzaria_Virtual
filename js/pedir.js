@@ -44,8 +44,5 @@ export default () => {
 
     carrinho();
 
-    const { innerText } = selek('valor_1'),
-    getIndex = (from, to) => [from, to].map(i => innerText.indexOf(i));
-
     CardLink('Para finalizar o pedido Clique ', '#finalizarPedido');
 }
