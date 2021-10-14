@@ -8,6 +8,10 @@
     margin-left: 0;
 }
 
+.carrinho {
+    width: fit-content;
+}
+
 .container:not(#container-pizzas) {
     border-bottom: 1px solid;
     margin: 3px;

@@ -483,7 +483,7 @@ export function FormBox(local, idForm) {
  * @param {function} fn 
  */
 export function consumirAPI(url, fn) {
-    fetch(url, arguments.length === 3 ? arguments[1] : '')
+    fetch(url)
         .then(res => res.json())
         .then(fn);
 }
