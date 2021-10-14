@@ -2,6 +2,7 @@ import { render, selek, sElem, templatr } from "./lib7.js";
 import home from "./pages/home.js";
 import pedido from "./pages/pedido.js";
 import finalizarPedido from "./pages/finalizarPedido.js";
+import setCarrinho from "./setCarrinho.js";
 
 templatr(
     { div: { id: 'root' } },
@@ -14,7 +15,10 @@ sElem('footer').appendChild(render({ p: { id: 'copyright' } }, 'Matsa \u00A9 202
 window.onload = () => {
     localStorage.removeItem('carrinho');
 
-    home();
+    setCarrinho('');    
+
+    pedido();
+    //home();
 
     const pages = {
         '#home': home,

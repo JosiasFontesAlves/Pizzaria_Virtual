@@ -1,15 +1,18 @@
 import { selek, selekFn, seleKlass } from "./lib7.js";
+import setCarrinho from "./setCarrinho.js";
 
 export default () => {
     const carrinho = {},
         span = num => selek(`num_${num}`),
-        qtdePizzas = id => Number(span(id).innerHTML), 
+        qtdePizzas = id => Number(span(id).innerHTML),
         salvarCarrinho = (item, idSpan) => {
             const [sabor, valor] = [`pizza_${item - 1}`, `valor_${idSpan}`].map(item => selek(item).innerHTML);
 
             carrinho[`${sabor} ${valor}`] = qtdePizzas(item); // Salva a quantidade de pizzas no carrinho
 
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+            setCarrinho(JSON.stringify(carrinho));
         },
         indexPizza = id => {
             const index = selek(id).classList == 'mais' ? 11 : 12;
