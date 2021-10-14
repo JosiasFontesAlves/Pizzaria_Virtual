@@ -40,4 +40,5 @@ a:hover {
 footer {
     bottom: 0;
     font-size: 8px;
+    z-index: -1;
 }

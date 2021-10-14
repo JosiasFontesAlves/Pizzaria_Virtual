@@ -22,8 +22,6 @@ export default () => {
         }
     }
 
-    //TODO -> Calcular o preço final
-
     root.appendChild(
         Card('carrinho', [
             render('h1', 'Você escolheu:'),
