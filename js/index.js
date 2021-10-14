@@ -13,12 +13,10 @@ templatr(
 sElem('footer').appendChild(render({ p: { id: 'copyright' } }, 'Matsa \u00A9 2021 - Josias Fontes Alves'));
 
 window.onload = () => {
-    localStorage.removeItem('carrinho');
 
     setCarrinho('');    
-
-    pedido();
-    //home();
+    
+    home();
 
     const pages = {
         '#home': home,

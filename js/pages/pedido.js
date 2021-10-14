@@ -30,6 +30,4 @@ export default () => {
             setTimeout(pedir, 520);
         }
     });
-
-    pedir();
 }
