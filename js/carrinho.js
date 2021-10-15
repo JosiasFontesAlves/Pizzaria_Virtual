@@ -10,8 +10,6 @@ export default () => {
 
             carrinho[`${sabor} ${valor}`] = qtdePizzas(item); // Salva a quantidade de pizzas no carrinho
 
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
-
             setCarrinho(JSON.stringify(carrinho));
         },
         indexPizza = id => {
