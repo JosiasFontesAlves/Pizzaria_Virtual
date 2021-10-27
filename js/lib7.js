@@ -9,7 +9,7 @@
  * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
  */
 
-let versão = '2.8.5';
+let versão = '2.9.3';
 
 /** 
  * @param {string} local
@@ -48,82 +48,61 @@ export function criarBotão(local, idBtn, estilo, cor) {
     document.getElementById(local).appendChild(res[0]);
 } /* ----- Lib de botões ----- */
 
-export class Tempus {
+export const Tempus = {
+    p: () => document.createElement('p'),
+    setAtr(el, id, innerHTML) {
+        el.id = id;
+        el.innerHTML = innerHTML;
+    },
     /**
-     * @param {string} idRel 
+     * @param {string} id 
      * @param {number} estilo 
      */
-    static relógio(idRel, estilo) {
+    relógio(id, estilo) {
+        const rel = this.p();
+
         setInterval(() => {
-            const data = new Date(),
-                rlg = [data.getHours(), data.getMinutes(), data.getSeconds()];
+            const date = new Date(),
+                rlg = [date.getHours(), date.getMinutes(), date.getSeconds() + 1];
 
             for (let x in rlg) rlg[x] < 10 ? rlg[x] = `0${rlg[x]}` : '';
 
-            const rel = [rlg.join(':'), (rlg.pop(), rlg.join(':'))];
-
-            document.getElementById(`${idRel}`).innerHTML = rel[estilo];
+            this.setAtr(rel, id, (estilo === 0) ? rlg.join(':') : (rlg.pop(), rlg.join(':')));
         }, 1000);
-    }
 
+        return rel;
+    },
     /**
-     * @param {string} idCal 
+     * @param {string} id 
      * @param {number} estilo 
      */
-    static calendário(idCal, estilo) {
+    calendário(id, estilo) {
+        const cal = this.p();
+
         setInterval(() => {
-            const data = new Date(),
+            const date = new Date(),
                 calendário = {
                     diaSem: ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"],
                     mês: ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"]
-                }
+                },
+                estilos = [
+                    `${calendário.diaSem[date.getDay()]} ${date.getDate()} ${calendário.mês[date.getMonth()]} ${date.getFullYear()}`,
+                    `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                ];
 
-            const cal = [
-                `${calendário.diaSem[data.getDay()]} ${data.getDate()} ${calendário.mês[data.getMonth()]} ${data.getFullYear()}`,
-                `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`
-            ];
-
-            document.getElementById(`${idCal}`).innerHTML = cal[estilo];
+            this.setAtr(cal, id, estilos[estilo]);
         }, 1000);
-    }
 
-    /**
-     * @param {string} idSau 
-     */
-    static saudação = idSau => {
-        const hora = new Date().getHours();
+        return cal;
+    },
+    saudação(id) {
+        const sdc = this.p(),
+            hora = new Date().getHours();
 
-        document.getElementById(`${idSau}`).innerHTML = (hora <= 12) ? "Bom dia!" : (hora >= 18) ? "Boa noite!" : "Boa tarde!";
-    }
+        sdc.id = id;
+        sdc.innerHTML = (hora <= 12) ? "Bom dia!" : (hora >= 18) ? "Boa noite!" : "Boa tarde!";
 
-    static count(cond, varCtrl) { // Usar apenas nas funções de contagem
-            if (cond) clearInterval(varCtrl);
-        }
-        /**
-         * @param {number} contador
-         * @param {function} fn
-         * @param {number} vel 
-         */
-    static contagemRegressiva(contador, fn, vel) {
-        const cont = setInterval(() => {
-            fn();
-            contador--;
-            this.count(contador == 0, cont);
-        }, vel);
-    }
-
-    /**
-     * @param {number} contador 
-     * @param {number} varCtrl 
-     * @param {function} fn 
-     * @param {number} vel 
-     */
-    static contagem(contador, varCtrl, fn, vel) {
-        const c = setInterval(() => {
-            fn();
-            contador++;
-            this.count(contador >= varCtrl, c);
-        }, vel);
+        return sdc;
     }
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -162,7 +141,7 @@ export const seleKlass = classe => document.getElementsByClassName(classe);
  * @param {string[]} pos 
  */
 export function temEsc(id, pos) {
-    document.getElementById(id).addEventListener('click', function() {
+    document.getElementById(id).addEventListener('click', function () {
         const { body } = document, { style } = this;
 
         if (pos.length <= 2) {
@@ -184,20 +163,18 @@ export function menuLateral(id, px) {
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 export function kreatto() {
-    [...arguments].forEach(arg => {
-        for (let elem in arg) {
-            const res = [];
-            for (let tag of arg[elem]) { // Cria os componentes
-                res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]));
-                res.forEach((el, i) => {
-                    if (typeof arg[elem][i] === 'object') {
-                        for (let key in arg[elem][i]) // Caso sejam objetos aninhados, adiciona os atributos
-                            Object.entries(arg[elem][i][key]).forEach(([atr, val]) => el.setAttribute(atr, val));
-                    }
-                });
-                document.querySelector(elem).append(...res);
-            }
-        }
+    [...arguments].forEach(local => {
+        Object.entries(local).map(([tag, childs]) => {
+            const res = [], setElem = child => res.push(document.createElement(typeof child === 'string' ? child : Object.keys(child)[0]));
+            Array.isArray(childs) ? childs.map(child => setElem(child)) : setElem(childs); // Cria os componentes
+            res.forEach((el, i) => {
+                if (typeof childs[i] === 'object') {
+                    for (let key in childs[i]) // Caso sejam objetos aninhados, adiciona os atributos
+                        Object.entries(childs[i][key]).map(([atr, val]) => el.setAttribute(atr, val));
+                }
+            });
+            document.querySelector(tag).append(...res);
+        });
     });
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -205,13 +182,13 @@ export function kreatto() {
 
 export function templatr() {
     [...arguments].forEach(elem => {
-		const el = document.createElement(typeof elem === 'string' ? elem : Object.keys(elem)[0]);
-		if (typeof elem === 'object') {
+        const el = document.createElement(typeof elem === 'string' ? elem : Object.keys(elem)[0]);
+        if (typeof elem === 'object') {
             for (let tag in elem)
                 Object.entries(elem[tag]).forEach(([atr, val]) => el.setAttribute(atr, val));
         }
-		document.body.appendChild(el);
-	});
+        document.body.appendChild(el);
+    });
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /** 
@@ -336,50 +313,45 @@ export function grid(classe, qtde, id, local, tag) {
 } /* --------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {string} local 
  * @param {object[]} tabela
  */
-export function criarTabela(local, tabela) {
-    /**
-     * @param {string} elem 
-     */
-    const $render = elem => document.createElement(elem);
+export const Tabela = tabela => {
+    const [table, thead, tbody] = ['table', 'thead', 'tbody'].map(el => document.createElement(el));
 
-    const [table, tbody] = ['table', 'tbody'].map(elem => $render(elem));
+    const tr = cont => {
+        const row = document.createElement('tr');
+        row.append(...cont);
 
-    const $th = Object.keys(...tabela).map(thead => {
-        const th = $render('th');
-        th.append(thead);
+        return row;
+    }
 
-        return th;
+    [thead, tbody].forEach(elem => table.appendChild(elem));
+
+    const head = Object.keys(...tabela).map(th => {
+        const $th = document.createElement('th');
+        $th.textContent = th;
+
+        return $th;
     });
 
-    const $tabela = tabela.flatMap(tab => {
-        return [
-            Object.values(tab).map(dado => {
-                const td = $render('td');
-                td.append(dado);
+    thead.append(tr(head));
 
-                return td;
-            })
-        ].map(tab => {
-            const tr = $render('tr');
-            tr.append(...tab);
+    const $tabela = tabela.flatMap(tab => [
+        Object.values(tab).map(dado => {
+            const td = document.createElement('td');
+            td.append(dado);
 
-            return tr;
-        });
-    });
+            return td;
+        })
+    ].map(tab => {
+        const row = tr(tab);
 
-    const tr = $render('tr');
-    tr.append(...$th);
-
-    const thead = $render('thead');
-    thead.appendChild(tr);
+        return row;
+    }));
 
     tbody.append(...$tabela);
-    table.append(thead, tbody);
 
-    document.querySelector(local).appendChild(table);
+    return table;
 } /* --------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
@@ -406,10 +378,7 @@ export function render(tag, conteúdo) {
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {object} arguments
- * @param {string} arguments._local 
- * @param {string | object} arguments._tag 
- * @param {number} arguments._qtde
+ * Container([local, tag, qtde, idContainer, idComponente])
  */
 export function Container() {
     [...arguments].forEach(([local, tag, qtde, idContainer, idComponente], i) => {
@@ -430,7 +399,7 @@ export function Container() {
             });
         }
 
-        container.classList = ' container ';
+        container.classList.add('container');
         container.id = idContainer;
         container.append(...res);
 
@@ -486,6 +455,39 @@ export function consumirAPI(url, fn) {
     fetch(url)
         .then(res => res.json())
         .then(fn);
+} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
+
+/**
+ * @param {{string: function}} pages 
+ * @param {function} fn - CallBack opcional
+ */
+export function SPA(pages, fn) {
+    window.onhashchange = () => {
+        if (fn) fn();
+
+        pages[location.hash]();
+    }
 }
+
+/**
+ * @param {{string: string}} props 
+ * @param {HTMLElement[]} elems 
+ */
+export function Card(props, elems) {
+    const card = document.createElement('div');
+
+    Object.entries(props).forEach(([atr, val]) => card.setAttribute(atr, val));
+
+    card.classList.add('card');
+    card.append(...elems);
+
+    return card;
+}
+
+/**
+ * @param {string} local 
+ * @param {HTMLElement[]} childs 
+ */
+export const insertChilds = (local, childs) => document.querySelector(local).append(...childs);
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2021\nCriada por Josias Fontes Alves`);
