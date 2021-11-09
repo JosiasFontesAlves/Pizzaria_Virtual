@@ -1,30 +1,22 @@
-import { Card, insertChilds, render, selek, sElem, templatr } from "./lib7.js";
-import pizzas from "../../js/pizzas.js";
+import { render, selek, sElem, SPA, templatr } from "./lib7.js"; // v3.1.7
+import template from "./template.js";
+import home from "./pages/home.js";
+import pedido from "./pages/pedido.js";
 
-templatr(
-    { div: { id: 'root' } },
-    { div: { id: 'card-link', class: 'w100' } },
-    { footer: { class: 'fix w100' } }
-);
+const { container, copyright, index } = template;
 
-selek('root').appendChild(
-    render({ section: { id: 'container-pizzas' } })
-);
+templatr(...index);
 
-Object.entries(pizzas).map(([sabor, pizzas], i) => {
-    const valor = [25, 25, 35];
+selek('root').appendChild(render(container));
 
-    selek('container-pizzas').appendChild(
-        Card({ div: { class: `pizzas_${sabor}` } }, [
-            render({ h2: { class: 'sabores' } }, `Pizzas ${sabor} R$${valor[i]}`),
-            ...pizzas.map(pizza => render({ p: { class: 'pizza' } }, pizza))
-        ])
-    );
-});
+sElem('footer').appendChild(render(...copyright));
 
-insertChilds('#card-link', [
-    render('span', 'Pronto(a) para pedir? Clique '),
-    render({ a: { href: '#pedido' } }, 'aqui!')
-]);
+window.onload = () => {
+    home();
+   // pedido();
 
-sElem('footer').appendChild(render({ p: { id: 'copyright' } }, 'Matsa \u00A9 2021 - Josias Fontes Alves'));
+    SPA({
+        '#home': home,
+        '#pedido': pedido
+    }, () => ['container-pizzas', 'card-link'].forEach(el => selek(el).innerHTML = ''));
+}

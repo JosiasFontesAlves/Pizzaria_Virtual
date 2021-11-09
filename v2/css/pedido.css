@@ -1,0 +1,20 @@
+.card_btn {
+    margin-right: 0;
+    padding: 7px;
+}
+
+button {
+    background: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 7px;
+}
+
+.btn * {
+    text-shadow: 2px 2px 2px var(--ghost_bg);
+}
+
+button:hover {
+    color: red;
+}
