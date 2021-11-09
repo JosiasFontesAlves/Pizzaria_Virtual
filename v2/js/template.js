@@ -68,5 +68,9 @@ export default {
         },
         'Matsa \u00A9 2021 - Josias Fontes Alves'
     ],
-    valor: [25, 25, 35]
+    valor: {
+        Tradicionais: 25,
+        Doces: 25,
+        Especiais: 35
+    }
 }

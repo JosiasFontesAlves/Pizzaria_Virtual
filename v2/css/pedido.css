@@ -1,6 +1,10 @@
+.card_pizzas {
+    border-bottom: 1.5px solid;
+}
+
 .card_btn {
     margin-right: 0;
-    padding: 7px;
+    padding: 3px;
 }
 
 button {
@@ -17,4 +21,8 @@ button {
 
 button:hover {
     color: red;
+}
+
+#card-link {
+    transform: translateY(-15px);
 }
