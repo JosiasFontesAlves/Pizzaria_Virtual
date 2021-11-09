@@ -12,8 +12,8 @@ selek('root').appendChild(render(container));
 sElem('footer').appendChild(render(...copyright));
 
 window.onload = () => {
-    home();
-   // pedido();
+    // home();
+   pedido();
 
     SPA({
         '#home': home,
