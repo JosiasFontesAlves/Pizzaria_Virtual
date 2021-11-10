@@ -1,31 +1,26 @@
 * {
     font-family: 'roboto mono', sans-serif;
     text-shadow: var(--neon2) var(--ghost_bg);
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 body {
     flex-wrap: wrap;
+    text-align: center;
+}
+
+#ttl {
+    top: 0;
 }
 
 .sabores {
     border-bottom: 2px dashed;
 }
 
-.pizzas {
-    margin: 10px;
-}
-
-.sabores, li, footer {
+.pizza {
     padding: 5px;
-}
-
-footer, .sabores, #pedir, #card-link {
-    text-align: center;
-}
-
-#card-link {
-    margin-bottom: 55px;
+    margin-left: 15px;
+    text-align: left;
 }
 
 a {
@@ -38,7 +33,7 @@ a:hover {
 }
 
 footer {
-    bottom: 0;
-    font-size: 8px;
+    bottom: 3px;
+    font-size: 10px;
     z-index: -1;
 }

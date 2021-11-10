@@ -1,32 +1,26 @@
-import { render, selek, sElem, templatr } from "./lib7.js";
+import { insertChilds, render, selek, sElem, SPA, templatr } from "./lib7.js"; // v3.1.7
+import template from "./template.js";
 import home from "./pages/home.js";
 import pedido from "./pages/pedido.js";
 import finalizarPedido from "./pages/finalizarPedido.js";
 import setCarrinho from "./setCarrinho.js";
 
-templatr(
-    { div: { id: 'root' } },
-    { div: { id: 'card-link', class: 'w100' } },
-    { footer: { class: 'fix w100' } }
-);
+const { copyright, index, root_childs } = template;
 
-sElem('footer').appendChild(render({ p: { id: 'copyright' } }, 'Matsa \u00A9 2021 - Josias Fontes Alves'));
+templatr(...index);
+
+insertChilds('#root', root_childs.map(child => render(child)));
+
+sElem('footer').appendChild(render(...copyright));
 
 window.onload = () => {
+    setCarrinho('');
 
-    setCarrinho('');    
-    
     home();
 
-    const pages = {
+    SPA({
         '#home': home,
         '#pedido': pedido,
         '#finalizarPedido': finalizarPedido
-    }
-
-    window.onhashchange = () => {
-        ['root', 'card-link'].forEach(el => selek(el).innerHTML = '');
-
-        pages[location.hash]();
-    }
+    }, () => ['container-pizzas', 'card-link', 'msg', 'valorTotal'].forEach(el => selek(el).innerHTML = ''));
 }

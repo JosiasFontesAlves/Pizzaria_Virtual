@@ -1,9 +1,10 @@
 .carrinho {
-    width: fit-content;
     display: grid;
+    width: fit-content;
 }
 
-.carrinho_pizzas {
+.carrinho_pizzas:not(p) {
+    border-bottom: 2px dashed;
     margin: 5px;
     text-align: center;
     width: 320px;
@@ -15,5 +16,5 @@
 }
 
 .links {
-   padding: 15px;
+    padding: 15px;
 }

@@ -1,29 +1,10 @@
-#nome {
-    left: 0;
-    text-align: center;
-    top: 0;
+.card_pizzas {
+    border-bottom: 1.5px solid;
 }
 
-.pizzas_valor, .carrinho {
-    margin-left: 0;
-}
-
-.carrinho {
-    width: fit-content;
-}
-
-.container:not(#container-pizzas) {
-    border-bottom: 1px solid;
-    margin: 3px;
-    width: 300px;
-}
-
-.pizzas_valor * {
-    padding: 7px;
-}
-
-.span_pizzas {
+.card_btn {
     margin-right: 0;
+    padding: 3px;
 }
 
 button {
@@ -42,6 +23,6 @@ button:hover {
     color: red;
 }
 
-.btn {
-    margin-right: 0;
+#card-link {
+    transform: translateY(-15px);
 }

@@ -1,40 +1,26 @@
-import { selek, selekFn, seleKlass } from "./lib7.js";
+import { selekFn, seleKlass } from "./lib7.js";
 import setCarrinho from "./setCarrinho.js";
 
 export default () => {
-    const carrinho = {},
-        span = num => selek(`num_${num}`),
-        qtdePizzas = id => Number(span(id).innerHTML),
-        salvarCarrinho = (item, idSpan) => {
-            const [sabor, valor] = [`pizza_${item - 1}`, `valor_${idSpan}`].map(item => selek(item).innerHTML);
+    const carrinho = {};
 
-            carrinho[`${sabor} ${valor}`] = qtdePizzas(item); // Salva a quantidade de pizzas no carrinho
+    ['btn_menos', 'btn_mais'].map(classe => {
+        [...seleKlass(classe)].map(({ id }) => {
+            selekFn(id, 'click', ({ path, target: { classList } }) => {
+                const toNumber = str => Number(str),
+                    fnClasse = {
+                        btn_mais: num => toNumber(num) + 1,
+                        btn_menos: num => (num > 0) ? toNumber(num) - 1 : 0
+                    },
+                    qtdePizzas = () => path[1].children[1].textContent;
 
-            setCarrinho(JSON.stringify(carrinho));
-        },
-        indexPizza = id => {
-            const index = selek(id).classList == 'mais' ? 11 : 12;
+                path[1].children[1].textContent = fnClasse[classList](qtdePizzas());
 
-            return id.length === index ? id[index - 2] + id[index - 1] : id[index - 2];
-        };
+                // Adiciona/remove as pizzas do carrinho
+                carrinho[path[2].children[0].textContent] = qtdePizzas();
 
-    // Adiciona pizzas no carrinho
-    [...seleKlass('mais')].forEach(({ id }) => {
-        selekFn(id, 'click', () => {
-            span(indexPizza(id)).innerHTML = qtdePizzas(indexPizza(id)) + 1;
-
-            salvarCarrinho(indexPizza(id), indexPizza(id));
+                setCarrinho(JSON.stringify(carrinho));
+            });
         });
-    });
-
-    // Remove-as do carrinho
-    [...seleKlass('menos')].forEach(({ id }) => {
-        selekFn(id, 'click', () => {
-            if (span(indexPizza(id)).innerHTML > 0) {
-                span(indexPizza(id)).innerHTML = qtdePizzas(indexPizza(id)) - 1;
-
-                salvarCarrinho(indexPizza(id), indexPizza(id));
-            };
-        })
     });
 }

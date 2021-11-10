@@ -1,33 +1,36 @@
-import pedir from "../pedir.js";
-import { kreatto, SearchBox, selek, selekFn, texto } from "../lib7.js";
+import { Card, insertChilds, render, selek } from "../lib7.js";
+import template from "../template.js";
+import getPizzas from "../getPizzas.js";
+import Btn from "../components/Btn.js";
+import Span from "../components/Span.js";
+import carrinho from "../carrinho.js";
 
 export default () => {
-    selek('card-link').hidden = true;
+    location.hash = '#pedido';
 
-    kreatto({
-        '#root': [
-            { 'h2': { id: 'sdc' } }
-        ]
+    const { card_btn, card_pizzas: [card, classe], valor } = template;
+
+    let ctrl = 0;
+
+    getPizzas(([sabor, pizzas]) => {
+        pizzas.map(pizza => {
+            selek('container-pizzas').appendChild(
+                Card(card, [
+                    render({ p: { ...classe, id: `pizza_${ctrl}` } }, `${pizza} R$${valor[sabor]}`),
+                    Card(card_btn, [
+                        Btn(`btn-menos-${ctrl}`, 'btn_menos', '-'),
+                        Span(`span-pizza-${ctrl}`, '0'),
+                        Btn(`btn-mais-${ctrl++}`, 'btn_mais', '+')
+                    ])
+                ])
+            );
+        });
     });
+    
+    carrinho();
 
-    SearchBox('#root', {
-        input: {
-            id: 'txt', type: 'text',
-            placeholder: 'Digite seu nome'
-        }, button: { id: 'ok' }
-    });
-
-    texto(
-        { sdc: 'Olá, Digite seu nome' },
-        { ok: '=>' }
-    );
-
-    selekFn('ok', 'click', () => {
-        const txt = selek('txt');
-
-        if (txt.value !== '') {
-            txt.style.width = '5px';
-            setTimeout(pedir, 520);
-        }
-    });
+    insertChilds('#card-link', [
+        Span('link', 'Para finalizar o pedido clique '),
+        render({ a: { href: '#finalizarPedido' } }, 'aqui!')
+    ]);
 }

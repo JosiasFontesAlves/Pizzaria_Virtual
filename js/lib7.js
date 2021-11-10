@@ -7,9 +7,9 @@
  * *        * *        * *     * *           * *            * *                          * *     * *             * * 
  * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
  * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
- */
+*/
 
-let versão = '2.9.3';
+let versão = '3.1.7';
 
 /** 
  * @param {string} local
@@ -18,29 +18,32 @@ let versão = '2.9.3';
  * @param {string} cor
  */
 export function criarBotão(local, idBtn, estilo, cor) {
-    const tam = ["width: 50px; height: 20px; color: rgb(80, 80, 80)", "width: 20px; height: inherit; transform: translateX(-3%)"],
-        btn = {
-            borda: [
-                `${tam[0]}; border: 2px solid; padding: 2px; border-radius: 15px`,
-                `${tam[0]}; border: 2px solid; padding: 2px;`,
-                `${tam[0]}; border: 1px solid; background: lightgreen; border-radius: 25px;`,
-                `${tam[0]}; background: gray; border-radius: 5px; padding: 2px;`,
-                `width: 50px; height: 15px; background: darkred; border-radius: 25px; display: flex; align-items: center`,
-                `${tam[0]}; border-radius: 25px; background: silver; border: 1px solid`,
-            ],
-            botão: [
-                `${tam[1]}; background: ${cor}; border-radius: inherit;`, `${tam[1]}; background: ${cor};`,
-                `width: 20px; height: inherit; background: ${cor}; border-radius: 50%;`,
-                `${tam[1]}; background: ${cor}; border-radius: inherit;`,
-                `width: 25px; height: 25px; background: red; border-radius: 50%;`,
-                `width: 10px; height: 10px; border: 5px solid ${cor}; background: none; border-radius: 50%;`,
-            ]
-        },
-        res = [];
+    const tam = [
+        "width: 50px; height: 20px; color: rgb(80, 80, 80)",
+        "width: 20px; height: inherit; transform: translateX(-3%)",
+        "border: 2px solid; padding: 2px;", 25, 50
+    ], btn = {
+        borda: [
+            `${tam[0]}; ${tam[2]} border-radius: 15px`, `${tam[0]}; ${tam[2]};`,
+            `${tam[0]}; border: 1px solid; background: lightgreen; border-radius: ${tam[3]}px;`,
+            `${tam[0]}; background: gray; border-radius: 5px; padding: 2px;`,
+            `width: ${tam[4]}px; height: 15px; background: darkred; border-radius: ${tam[3]}px; display: flex; align-items: center`
+        ],
+        botão: [
+            `${tam[1]}; background: ${cor}; border-radius: inherit;`,
+            `${tam[1]}; background: ${cor};`,
+            `width: 20px; height: inherit; background: ${cor}; border-radius: ${tam[4]}%;`,
+            `${tam[1]}; background: ${cor}; border-radius: inherit;`,
+            `width: ${tam[3]}px; height: ${tam[3]}px; background: red; border-radius: ${tam[4]}%;`
+        ]
+    }, res = [
+        ['div', btn.borda[estilo]], ['button', `cursor: pointer; ${btn.botão[estilo]} border: none; position: fixed;`]
+    ].map(([elem, stl]) => {
+        const el = document.createElement(elem);
+        el.style = stl;
 
-    while (res.length < 2) res.push(document.createElement('div'));
-
-    [btn.borda[estilo], `${btn.botão[estilo]} position: fixed;`].forEach((stl, i) => res[i].style = stl);
+        return el;
+    });
 
     res[1].id = idBtn;
     res[0].appendChild(res[1]);
@@ -50,10 +53,7 @@ export function criarBotão(local, idBtn, estilo, cor) {
 
 export const Tempus = {
     p: () => document.createElement('p'),
-    setAtr(el, id, innerHTML) {
-        el.id = id;
-        el.innerHTML = innerHTML;
-    },
+    setAtr: (el, id, innerHTML) => [['id', id], ['innerHTML', innerHTML]].forEach(([prop, val]) => el[prop] = val),
     /**
      * @param {string} id 
      * @param {number} estilo 
@@ -63,7 +63,7 @@ export const Tempus = {
 
         setInterval(() => {
             const date = new Date(),
-                rlg = [date.getHours(), date.getMinutes(), date.getSeconds() + 1];
+                rlg = [date.getHours(), date.getMinutes(), date.getSeconds()];
 
             for (let x in rlg) rlg[x] < 10 ? rlg[x] = `0${rlg[x]}` : '';
 
@@ -95,12 +95,14 @@ export const Tempus = {
 
         return cal;
     },
+    /**
+     * @param {string} id 
+     */
     saudação(id) {
         const sdc = this.p(),
             hora = new Date().getHours();
 
-        sdc.id = id;
-        sdc.innerHTML = (hora <= 12) ? "Bom dia!" : (hora >= 18) ? "Boa noite!" : "Boa tarde!";
+        this.setAtr(sdc, id ?? 'tempus-sdc', (hora <= 12) ? "Bom dia!" : (hora >= 18) ? "Boa noite!" : "Boa tarde!");
 
         return sdc;
     }
@@ -121,14 +123,14 @@ export const sElem = elem => document.querySelector(elem);
  * @param {EventListener} ev 
  * @param {function} fn 
  */
-export const selekFn = (id, ev, fn) => document.getElementById(id).addEventListener(ev, fn);
+export const selekFn = (id, ev, fn) => document.getElementById(id).addEventListener(ev, fn, false);
 
 /**
  * @param {Element} elem 
  * @param {EventListener} ev 
  * @param {function} fn 
  */
-export const sElemFn = (elem, ev, fn) => document.querySelector(elem).addEventListener(ev, fn);
+export const sElemFn = (elem, ev, fn) => document.querySelector(elem).addEventListener(ev, fn, false);
 
 /**
  * @param {Element} classe 
@@ -137,30 +139,26 @@ export const seleKlass = classe => document.getElementsByClassName(classe);
 /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {string} id 
- * @param {string[]} pos 
+ * @param {string} btn - Botão que será responsável pelo evento
+ * @param {string[]} elems - Elementos que serão alterados pelo toggle
+ * @param {string} toggle - Classe CSS que será responsável pelo tema escuro
+ * @param {function} fn - Callback opcional
  */
-export function temEsc(id, pos) {
-    document.getElementById(id).addEventListener('click', function () {
-        const { body } = document, { style } = this;
+export const temEsc = (btn, elems, toggle, fn) => document.getElementById(btn).addEventListener('click', ev => {
+    elems.map(elem => document.querySelector(elem).classList.toggle(toggle));
 
-        if (pos.length <= 2) {
-            style.transform == `translate(0%)` && body.style.background == 'white' ?
-                (style.transform = `translate(${pos})`, body.style.background = 'black') :
-                (style.transform = `translate(0%)`, body.style.background = 'white');
-        }
-    });
-} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
+    if (fn) fn(ev);
+});
+/* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {string} id 
- * @param {number} px 
+ * @param {string} id - id do menu
+ * @param {string} btn - Botão que será responsável pelo evento
+ * @param {string} toggle - Classe CSS que será responsável por esconder o menu
  */
-export function menuLateral(id, px) {
-    const { style } = document.querySelector('aside'), pos = [`translateX(${px}px)`, 'translateX(0)'];
-    style.transform = pos[0];
-    document.getElementById(id).addEventListener('click', () => style.transform = (style.transform == pos[0]) ? pos[1] : pos[0]);
-} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
+export const menuLateral = (id, btn, toggle) =>
+    document.getElementById(btn).addEventListener('click', () => document.querySelector(id).classList.toggle(toggle));
+/* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 export function kreatto() {
     [...arguments].forEach(local => {
@@ -378,53 +376,51 @@ export function render(tag, conteúdo) {
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * Container([local, tag, qtde, idContainer, idComponente])
+ * @param {object | string} propsContainer
+ * @param {object | string} propsChilds
+ * @param {string} idChilds
+ * @param {number} qtde
  */
-export function Container() {
-    [...arguments].forEach(([local, tag, qtde, idContainer, idComponente], i) => {
-        const res = [],
-            container = document.createElement('section');
+export const Container = (propsContainer, propsChilds, idChilds, qtde) => {
+    const $render = props => {
+        const el = document.createElement(typeof props === 'string' ? props : Object.keys(props)[0]);
 
-        for (let elem = 0; elem < qtde; elem++) // Cria os componentes
-            res.push(document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]));
-
-        if (typeof tag === 'object') {
-            let ctrlId = 0;
-
-            res.forEach(el => {
-                if (arguments[i].length == 5) el.id = idComponente + ctrlId++;
-
-                for (let key in tag)
-                    Object.entries(tag[key]).forEach(([atr, val]) => el.setAttribute(atr, val));
-            });
+        if (typeof props === 'object') {
+            for (let prop of Object.values(props))
+                Object.entries(prop).forEach(([atr, val]) => el.setAttribute(atr, val));
         }
 
-        container.classList.add('container');
-        container.id = idContainer;
-        container.append(...res);
+        return el;
+    }
 
-        document.querySelector(local).appendChild(container);
-    });
+    const container = $render(propsContainer);
+    container.classList.add('container');
+
+    for (let x = 0; x < qtde; x++) {
+        container.appendChild($render(propsChilds));
+        container.children[x].id = `${idChilds + x}`;
+    }
+
+    return container;
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {string} local 
+ * @param {object} props
  */
-export function SearchBox(local) {
+export function SearchBox(...props) {
     const searchBox = document.createElement('section');
-    searchBox.classList = 'searchBox';
-    searchBox.append(...['input', 'button'].map(elem => document.createElement(elem)));
+    searchBox.classList.add('searchBox');
 
-    document.querySelector(local).appendChild(searchBox);
+    ['input', 'button'].map((el, i) => {
+        const child = document.createElement(el);
 
-    if (typeof arguments[1] === "object") {
-        let ctrl = 0;
+        if (Array.isArray(props))
+            Object.entries(props[i]).map(([atr, val]) => child.setAttribute(atr, val));
 
-        for (let tag in arguments[1]) {
-            Object.entries(arguments[1][tag]).forEach(([atr, val]) => searchBox.children[ctrl].setAttribute(atr, val));
-            ctrl++;
-        }
-    }
+        searchBox.appendChild(child);
+    });
+
+    return searchBox;
 } /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
@@ -467,27 +463,77 @@ export function SPA(pages, fn) {
 
         pages[location.hash]();
     }
-}
+} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
- * @param {{string: string}} props 
+ * @param {object} props 
  * @param {HTMLElement[]} elems 
  */
 export function Card(props, elems) {
-    const card = document.createElement('div');
+    const card = document.createElement(typeof props === 'string' ? props : Object.keys(props)[0]);
 
-    Object.entries(props).forEach(([atr, val]) => card.setAttribute(atr, val));
+    if (typeof props === 'object') {
+        for (let prop of Object.values(props)) {
+            Object.entries(prop).forEach(([atr, val]) => card.setAttribute(atr, val));
+        }
+    }
 
     card.classList.add('card');
     card.append(...elems);
 
     return card;
-}
+} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 /**
  * @param {string} local 
  * @param {HTMLElement[]} childs 
  */
 export const insertChilds = (local, childs) => document.querySelector(local).append(...childs);
+/* ----------------------------------------------------------------------------------------------------------------------------------------- */
+
+/**
+ * @param {object | string} props 
+ * @param {string[]} urlFotos 
+ */
+export const Slider = (props, urlFotos) => {
+    const $render = el => document.createElement(el),
+        setStyle = (el, props) => Object.entries(props).map(([atr, val]) => el.style[atr] = val),
+        setFtAtual = ft => {
+            img.src = urlFotos[ft];
+            [[prev, (ftAtual === 0)], [next, (ftAtual >= urlFotos.length - 1)]].forEach(([btn, cond]) => btn.disabled = cond ? true : false);
+        }
+
+    const [slider, img] = ['section', 'img'].map(el => $render(el));
+
+    if (typeof props === 'object')
+        Object.entries(props).map(([atr, val]) => slider.setAttribute(atr, val));
+
+    setStyle(slider, {
+        display: 'flex',
+        alignItems: 'center'
+    });
+
+    const [prev, next] = [['prev', '<', 35], ['next', '>', -35]].map(([id, txt, pos]) => {
+        const btn = $render('button');
+        setStyle(btn, {
+            transform: `translateX(${pos}px)`,
+            height: 'fit-content'
+        });
+
+        [['textContent', txt], ['id', id], ['classList', 'btn_slider']].map(([atr, val]) => btn[atr] = val);
+
+        return btn;
+    });
+
+    let ftAtual = 0;
+
+    setFtAtual(ftAtual);
+
+    slider.append(prev, img, next);
+
+    [[prev, -1], [next, 1]].map(([btn, fn]) => btn.addEventListener('click', () => setFtAtual(ftAtual += fn)));
+
+    return slider;
+} /* ----------------------------------------------------------------------------------------------------------------------------------------- */
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2021\nCriada por Josias Fontes Alves`);

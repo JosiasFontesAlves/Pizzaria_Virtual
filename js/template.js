@@ -17,11 +17,24 @@ export default {
             }
         }
     ],
-    container: {
-        section: {
-            id: 'container-pizzas'
+    root_childs: [
+        {
+            h1: {
+                id: 'msg'
+            }
+        },
+        {
+            section: {
+                id: 'container-pizzas'
+            }
+        },
+        {
+            section: {
+                class: 'carrinho_pizzas flex', 
+                id: 'valorTotal'
+            }
         }
-    },
+    ],
     templatePizzas: [
         {
             h2: {

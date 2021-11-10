@@ -1,5 +1,9 @@
 @media only screen and (max-width: 500px) {
+   .pizza {
+        font-size: 20px;
+    }
+    
     #card-link {
-        margin-bottom: 200px;
+        transform: translateY(-25px);
     }
 }
