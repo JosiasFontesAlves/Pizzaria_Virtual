@@ -1,26 +1,11 @@
+@import 'lib.css';
+@import 'pedido.css';
+
 * {
     font-family: 'roboto mono', sans-serif;
+    overflow-wrap: break-word;
     text-shadow: var(--neon2) var(--ghost_bg);
     transition: 0.3s;
-}
-
-body {
-    flex-wrap: wrap;
-    text-align: center;
-}
-
-#ttl {
-    top: 0;
-}
-
-.sabores {
-    border-bottom: 2px dashed;
-}
-
-.pizza {
-    padding: 5px;
-    margin-left: 15px;
-    text-align: left;
 }
 
 a {
@@ -32,8 +17,15 @@ a:hover {
     color: var(--oceanicBlue);
 }
 
+header {
+    margin-top: 0;
+}
+
+.sabor_pizza {
+    padding: 7px;
+}
+
 footer {
-    bottom: 3px;
+    margin-bottom: 3px;
     font-size: 10px;
-    z-index: -1;
 }

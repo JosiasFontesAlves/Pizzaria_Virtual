@@ -1,0 +1,58 @@
+{
+    "carrinho": {},
+    "pizzas": {
+        "Tradicionais": {
+            "valor": 25,
+            "sabores": [
+                "Calabresa",
+                "Frango",
+                "Milho",
+                "Mussarela",
+                "Portuguesa",
+                "Presunto"
+            ]
+        },
+        "Doces": {
+            "valor": 25,
+            "sabores": [
+                "Banana",
+                "Chocolate",
+                "Morango",
+                "Prestígio",
+                "Romeu e Julieta"
+            ]
+        },
+        "Especiais": {
+            "valor": 35,
+            "sabores": [
+                "Alho",
+                "Bacon",
+                "Cachorro-quente",
+                "Calabresa especial",
+                "Nutella",
+                "Sorvete"
+            ]
+        }
+    },
+    "template": {
+        "home": {
+            "sabor_pizza": {
+                "p": {
+                    "class": "sabor_pizza"
+                }
+            }
+        },
+        "carrinho": {
+            "section": {
+                "class": "grid",
+                "id": "carrinho"
+            }
+        },
+        "valorTotal": {
+            "p": {
+                "class": "w50",
+                "id": "valorTotal"
+            }
+        }
+    }
+}
