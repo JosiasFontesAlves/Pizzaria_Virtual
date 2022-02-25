@@ -21,6 +21,10 @@ header {
     margin-top: 0;
 }
 
+.h2_sabor {
+    border-bottom: 2px dashed;
+}
+
 .sabor_pizza {
     padding: 7px;
 }

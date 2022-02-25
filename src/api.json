@@ -35,13 +35,18 @@
         }
     },
     "template": {
-        "home": {
-            "sabor_pizza": {
+        "home": [
+            {
                 "p": {
                     "class": "sabor_pizza"
                 }
+            },
+            {
+                "h2": {
+                    "class": "h2_sabor"
+                }
             }
-        },
+        ],
         "carrinho": {
             "section": {
                 "class": "grid",
