@@ -17,6 +17,7 @@ const Container = await consumirAPI('api.json', ({ pizzas, template }) => {
 
 export default render({
     section: {
+        class: 'brd_nardo bs_neon2',
         id: 'container-pizzas',
     }
 }, [

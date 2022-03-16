@@ -1,4 +1,4 @@
-@import 'lib.css';
+@import 'jacss.css';
 @import 'pedido.css';
 
 * {
@@ -23,10 +23,6 @@ header {
 
 .h2_sabor {
     border-bottom: 2px dashed;
-}
-
-.sabor_pizza {
-    padding: 7px;
 }
 
 footer {

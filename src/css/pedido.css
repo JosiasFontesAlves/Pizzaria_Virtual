@@ -1,7 +1,5 @@
 #container-pizzas {
-    border: 1px solid var(--vidro);
     border-radius: 10px;
-    box-shadow: 3px 5px 7px #818181d0;
     margin: 25px;
     padding: 7px;
     width: 65vw;

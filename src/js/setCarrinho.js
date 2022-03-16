@@ -5,7 +5,7 @@ export default () => consumirAPI('api.json', api => {
     const carrinho = {};
     const setAPI = () => httpPost('api', api);
 
-    selekFn('root', 'click', ({ path, target }) => {
+    selekFn('#root', 'click', ({ path, target }) => {
         const [pizza, spanPizza] = [
             path[2], path[1]
         ].map(({ children }, i) => children[i]);
@@ -28,7 +28,7 @@ export default () => consumirAPI('api.json', api => {
         }
 
         if (target.id === 'btn-carrinho' && getValues(api.carrinho).length !== 0) {
-            const root = selek('root');
+            const root = selek('#root');
             const valorTotal = mapEntries(api.carrinho, ([sabor, valor]) =>
                 sabor.substring(sabor.indexOf('$') + 1) * valor
             ).reduce((a, b) => a + b, 0);
@@ -37,9 +37,9 @@ export default () => consumirAPI('api.json', api => {
 
             insertChilds('#root', [Carrinho(api, valorTotal)]);
 
-            /*api.carrinho = {};
+            api.carrinho = {};
      
-            setAPI();*/
+            setAPI();
         }
     });
 });
