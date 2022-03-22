@@ -2,7 +2,7 @@ import { render } from "../lib7.js";
 
 export default render({
     footer: {
-        class: 'center flex w100'
+        class: 'center fix flex w100'
     }
 }, render({
     span: {

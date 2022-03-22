@@ -8,7 +8,7 @@ import setCarrinho from './setCarrinho.js';
 
 templatr([Header, Root, Footer]);
 
-location.hash = '#home';
+location.hash = '#pedido';
 
 SPA({
     '#home': Home,

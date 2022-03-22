@@ -55,8 +55,20 @@ a {
     width: 45px;
 }
 
+.btn_burger {
+    background: black;
+    border: none;
+    height: 5px;
+    width: 30px;
+}
+
 button {
     cursor: pointer;
+}
+
+#copyright {
+    background: none;
+    font-size: 7px;
 }
 
 table {
@@ -70,18 +82,6 @@ td {
     padding: 15px;
 }
 
-#copyright {
-    background: none;
-    font-size: 7px;
-}
-
-.btn_burger {
-    background: black;
-    border: none;
-    height: 5px;
-    width: 30px;
-}
-
 /* classes utilitárias */
 
 .blur {
@@ -89,12 +89,33 @@ td {
     backdrop-filter: blur(2px);
 }
 
+.blur2 {
+    background: #ffffffa5;
+    backdrop-filter: blur(2px);
+}
+
 .br15 {
     border-radius: 15px;
 }
 
+.br20 {
+    border-radius: 20px;
+}
+
 .bs_neon {
     box-shadow: 5px 5px 25px #acacac;
+}
+
+.brd_nardo {
+    border: 1px solid var(--nardoGray);
+}
+
+.bs_neon2 {
+    box-shadow: 5px 5px 15px #acacac;
+}
+
+.bs_neon3 {
+    box-shadow: 3px 3px 10px #acacac;
 }
 
 .center {
@@ -137,27 +158,6 @@ td {
     box-shadow: 3px 3px 7px var(--ghost_bg);
 }
 
-.brd_nardo {
-    border: 1px solid var(--nardoGray);
-}
-
-.bs_neon2 {
-    box-shadow: 5px 5px 15px #acacac;
-}
-
-.bs_neon3 {
-    box-shadow: 3px 3px 10px #acacac;
-}
-
-.br20 {
-    border-radius: 20px;
-}
-
-.blur2 {
-    background: #ffffffa5;
-    backdrop-filter: blur(2px);
-}
-
 /* classes de tamanho */
 
 .h50 {
@@ -177,7 +177,7 @@ td {
 }
 
 .w100 {
-    width: 100%;
+    width: 100vw;
 }
 
 /* Classes de função */

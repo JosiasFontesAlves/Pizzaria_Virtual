@@ -1,3 +1,4 @@
+//@ts-check
 /*  
  * * * * * * * * * * * * *     * * * * * * * * *    * * * * * * * * * *    * * * * * * * * *     * * * * * * * * * * 
  * * * * * * * * * * * * *     * * * * * * * * *    * * * * * * * * * *    * * * * * * * * *     * * * * * * * * * * 
@@ -9,35 +10,35 @@
  * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
 */
 
-let versão = '4.0.5';
+let versão = '4.0.8';
 
 /**
  * @param {string} idBtn
  * @param {number} estilo 
  * @param {string | string[]} cor
+ * @param {{ height?: number, width?: number }} props - tamanho em px
  */
-export function Btn(idBtn, estilo, cor) {
-    /**
-     * @param {number} i 
-     * @param {string | string[]} bg 
-     */
-    const setCor = (i, bg) => Array.isArray(cor) ? cor[i] : bg,
-        props = [
-            `background: ${cor[1]}; border: 2px solid; padding: 2px; height: 20px; width: 50px;`,
-            `background: ${setCor(0, cor)}; border: none; height: inherit; width: 20px;`,
-            `background: ${setCor(1, '#d8d8d8')};`, 'border-radius: 25px; height: 20px;'
-        ],
+export function Btn(idBtn, estilo, cor, { height, width }) {
+    const setCor = (/** @type {number} */ i, /** @type {string | string[]} */ bg) => Array.isArray(cor) ? cor[i] : bg;
+    const [h25, h_inherit] = [25, 'inherit'].map(h => `height: ${height ?? h}px;`);
+    const w25 = `width: ${width ?? 25}px;`, w25px = `width: ${width * 2.5}px;`;
+
+    const props = [
+        `background: ${cor[1]}; border: 2px solid; padding: 2px; height: 20px; ${w25px}`,
+        `background: ${setCor(0, cor)}; border: none; height: inherit; ${w25}`,
+        `background: ${setCor(1, '#d8d8d8')};`, `border-radius: ${height ?? 25}px; ${h25}`
+    ],
         btn = {
             div: [
                 `${props[0]} border-radius: 15px;`, props[0], `${props[0]} border-radius: 7px;`,
-                `${props[2]}; height: 15px; border-radius: 10px; display: flex; align-items: center; width: 50px;`,
-                `${props[2]}; ${props[3]}; border: 1px solid; width: 50px;`,
-                `${props[2]}; border: 2px solid; ${props[3]} padding: 5px; width: 55px;`
+                `${props[2]}; height: 15px; border-radius: 10px; display: flex; align-items: center; width: ${width * 2.2}px`,
+                `${props[2]} ${props[3]} border: 1px solid; ${w25px}`,
+                `${props[2]}; border: 2px solid; ${props[3]} padding: 5px; ${w25px}`
             ],
             button: [
                 `${props[1]} border-radius: inherit;`, props[1], `${props[1]} border-radius: 5px`,
-                `background: ${setCor(0, cor)}; border: none; border-radius: 50%; height: 25px; width: 25px`,
-                `width: 20px; border: 5px solid ${setCor(0, cor)}; background: none; border-radius: 50%; height: inherit;`,
+                `background: ${setCor(0, cor)}; border: none; border-radius: 50%; ${h25} ${w25}`,
+                `border: 5px solid ${setCor(0, cor)}; background: none; border-radius: 50%; ${h_inherit} ${w25}`,
                 `${props[1]} border-radius: 50%;`
             ]
         },
@@ -172,10 +173,7 @@ export const menuLateral = (id, btn, toggle) =>
     document.getElementById(btn).addEventListener('click', () => document.querySelector(id).classList.toggle(toggle));
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {HTMLElement[]} elems 
- */
-export const templatr = elems => elems.forEach(tag => document.body.appendChild(tag));
+export const templatr = (/** @type {HTMLElement[]} */ elems) => elems.forEach(tag => document.body.appendChild(tag));
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /** 
@@ -187,11 +185,7 @@ export const texto = tags => Object.entries(tags).forEach(([tag, texto]) => docu
 export const Animatus = {
     /**
      * @param {string} id 
-     * @param {object} props
-     * @param {string} props.background
-     * @param {string} props.border
-     * @param {number} props.height
-     * @param {number} props.width
+     * @param {{background: string, border: string, height: number, width: number }} props
      * @param {number} vel
      */
     barr(id, { background, border, height, width }, vel) {
@@ -230,11 +224,8 @@ export const Animatus = {
     }
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string} id 
- * @param {string[]} lista
- */
-export function DropDown(id, lista) {
+
+export const DropDown = (/** @type {string} */ id, /** @type {string[]} */ lista) => {
     const drop = document.createElement('select');
     drop.id = id;
     drop.classList.add('drop');
@@ -250,7 +241,7 @@ export function DropDown(id, lista) {
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {...{local: {pesq: [res: string]}}} args 
+ * @param {...{local: {[pesq: string]: string}}} args 
  */
 export const replacer = (...args) => Object.values(args).forEach((arg) => {
     for (const [local, res] of Object.entries(arg)) {
@@ -261,12 +252,7 @@ export const replacer = (...args) => Object.values(args).forEach((arg) => {
     }
 }); /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string} id 
- * @param {string[]} lista 
- * @param {{[prop: string]: string}} [props]
- */
-export const Lista = (id, lista, props) => {
+export const Lista = (/** @type {string} */ id, /** @type {any[]} */ lista, /** @type {{ [prop: string]: string; }} */ props) => {
     const $render = (/** @type {string} */ el) => document.createElement(el);
 
     const $lista = $render('ul');
@@ -286,11 +272,7 @@ export const Lista = (id, lista, props) => {
     return $lista;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string} id
- * @param {{}[]} tabela
- */
-export const Tabela = (id, tabela) => {
+export const Tabela = (/** @type {string} */ id, /** @type {Array.<object>} */ tabela) => {
     const [table, thead, tbody] = ['table', 'thead', 'tbody'].map(el => document.createElement(el));
     const $render = (/** @type {string} */ tag, /** @type {string} */ content) => {
         const el = document.createElement(tag);
@@ -326,7 +308,7 @@ export const Tabela = (id, tabela) => {
  * @param {{[tag: string]: {[prop: string]: string}} | string} tag
  * @param {HTMLElement | HTMLElement[] | string} [conteúdo]
  */
-export function render(tag, conteúdo) {
+export const render = (tag, conteúdo) => {
     const elem = document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]);
 
     if (typeof tag === 'object')
@@ -341,7 +323,7 @@ export function render(tag, conteúdo) {
 /**
  * @param {{[prop: string]: string}[]} props
  */
-export function SearchBox(...props) {
+export const SearchBox = (...props) => {
     const searchBox = document.createElement('section');
     searchBox.classList.add('searchBox');
 
@@ -364,7 +346,7 @@ export function SearchBox(...props) {
  * @param {string} txtBtn
  * @param {{[prop: string]: string}[]} [propsChilds]
  */
-export function FormBox(idForm, txtBtn, propsChilds) {
+export const FormBox = (idForm, txtBtn, propsChilds) => {
     const form = document.createElement('form');
     form.id = idForm;
 
@@ -391,7 +373,7 @@ export function FormBox(idForm, txtBtn, propsChilds) {
  * @param {string} url 
  * @param {function} fn 
  */
-export async function consumirAPI(url, fn) {
+export const consumirAPI = async (url, fn) => {
     const api = await fetch(url);
     const res = await api.json();
 
@@ -416,7 +398,7 @@ export const SPA = (pages, elem) => {
 
 /**
  * @param {string} local 
- * @param {HTMLElement[]} childs 
+ * @param {HTMLElement[] | string[]} childs 
  */
 export const insertChilds = (local, childs) => document.querySelector(local).append(...childs);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -478,18 +460,18 @@ export const mapValues = (obj, callBack) => Object.values(obj).map(callBack);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {object} obj
+ * @param {{}} obj
  */
 export const getEntries = obj => Object.entries(obj);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {object} obj
+ * @param {{}} obj
  */
 export const getKeys = obj => Object.keys(obj);
 
 /**
- * @param {object} obj
+ * @param {{}} obj
  */
 export const getValues = obj => Object.values(obj);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -509,13 +491,11 @@ export const httpPost = (url, body) => fetch(url, {
  * @param {{[prop: string]: string}} [propsNav]
  * @param {{[prop: string]: string}} [propsChilds]
  */
-export const LinkBar = (links, /** @type {{ [x: string]: string; }} */ propsNav, /** @type {{ [x: string]: string; }} */ propsChilds) => {
+export const LinkBar = (links, /** @type {{ [prop: string]: string; }} */ propsNav, /** @type {{ [prop: string]: string; }} */ propsChilds) => {
     const linkBarr = document.createElement('nav');
 
     const setProps = (/** @type {HTMLElement} */ el, /** @type {{ [prop: string]: string; }} */ props) => {
-        if (props) {
-            for (let prop in props) el.setAttribute(prop, props[prop]);
-        }
+        if (props) for (let prop in props) el.setAttribute(prop, props[prop]);
     }
 
     setProps(linkBarr, propsNav);
@@ -554,14 +534,14 @@ export const Title = (title, props) => {
 /**
  * @param {string} src 
  * @param {string} alt 
- * @param {{[prop: string]: string}} [props] 
+ * @param {{[prop: string]: string | number}} [props] 
  */
 export const Img = (src, alt, props) => {
     const img = document.createElement('img');
 
     Object.entries({ src, alt }).forEach(([prop, val]) => img.setAttribute(prop, val));
 
-    if (props) for (let prop in props) img.setAttribute(prop, props[prop]);
+    if (props) for (let prop in props) img[prop] = props[prop];
 
     return img;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -613,7 +593,11 @@ export const getRandomItem = (/** @type {any[]} */ arr) => arr[Math.floor(Math.r
 export const addClass = (el, classes) => document.querySelector(el).classList.add(...classes);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const Video = (/** @type {string} */ src, /** @type {{ [prop: string]: string }} */ props) => {
+/**
+ * @param {string} src 
+ * @param {{ [prop: string]: string }} props
+ */
+export const Video = (src, props) => {
     const video = document.createElement('video');
     video.src = src;
 
@@ -622,8 +606,21 @@ export const Video = (/** @type {string} */ src, /** @type {{ [prop: string]: st
     }
 
     return video;
-}
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const getIndex = (/** @type {string} */ str, /** @type {string} */ index) => str.substring(str.indexOf(index));
+export const getSubstring = (/** @type {string} */ str, /** @type {string[]} */[start, end]) => str.substring(str.indexOf(start), str.indexOf(end));
+
+/**
+ * @param {string} texto 
+ * @param {{ [prop: string]: string; }} [props]
+ */
+export const Span = (texto, props) => {
+    const span = document.createElement('span');
+    span.innerText = texto;
+
+    if (props) Object.entries(props).forEach(([prop, val]) => span.setAttribute(prop, val));
+
+    return span;
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2020 - ${new Date().getFullYear()}\nCriada por Josias Fontes Alves`);

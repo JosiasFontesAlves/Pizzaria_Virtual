@@ -1,12 +1,12 @@
 import { LinkBar, mapEntries, render } from '../lib7.js';
 
-const Pizza = (qtde, sabor) => render({
+const Pizza = (/** @type {number} */ qtde, /** @type {string} */ sabor) => render({
     p: {
         class: 'sabor_pizza'
     }
 }, `${qtde} pizza${qtde > 1 ? 's' : ''} de ${sabor} cada`);
 
-const Carrinho = api => {
+const Carrinho = (api) => {
     for (let pizza in api.carrinho) {
         if (api.carrinho[pizza] == 0) delete api.carrinho[pizza];
     }
@@ -14,7 +14,7 @@ const Carrinho = api => {
     return mapEntries(api.carrinho, ([sabor, qtde]) => Pizza(qtde, sabor));
 }
 
-export default (api, total) => {
+export default (api, /** @type {number} */ total) => {
     const { carrinho, valorTotal } = api.template;
 
     return render(carrinho, [

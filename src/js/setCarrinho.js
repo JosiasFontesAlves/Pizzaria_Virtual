@@ -11,12 +11,11 @@ export default () => consumirAPI('api.json', api => {
         ].map(({ children }, i) => children[i]);
         const toNumber = () => Number(spanPizza.textContent);
 
-
-        if (target.classList.contains('fn')) {
+        const AtualizarCarrinho = () => {
             const fnBtn = {
                 btn_menos: num => num > 0 ? num - 1 : 0,
                 btn_mais: num => num + 1
-            }
+            };
 
             spanPizza.textContent = fnBtn[target.classList[0]](toNumber());
 
@@ -27,10 +26,11 @@ export default () => consumirAPI('api.json', api => {
             setAPI();
         }
 
-        if (target.id === 'btn-carrinho' && getValues(api.carrinho).length !== 0) {
+        const mostrarValorTotal = () => {
+
             const root = selek('#root');
-            const valorTotal = mapEntries(api.carrinho, ([sabor, valor]) =>
-                sabor.substring(sabor.indexOf('$') + 1) * valor
+            const valorTotal = mapEntries(
+                api.carrinho, ([sabor, valor]) => Number(sabor.match(/\d+/)[0]) * valor
             ).reduce((a, b) => a + b, 0);
 
             root.innerHTML = '';
@@ -38,8 +38,12 @@ export default () => consumirAPI('api.json', api => {
             insertChilds('#root', [Carrinho(api, valorTotal)]);
 
             api.carrinho = {};
-     
+
             setAPI();
         }
+
+        if (target.classList.contains('fn')) AtualizarCarrinho();
+
+        if (target.id === 'btn-carrinho' && getValues(api.carrinho).length !== 0) mostrarValorTotal();
     });
 });
