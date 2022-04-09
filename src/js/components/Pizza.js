@@ -10,8 +10,6 @@ const Pizza = sabor => render({
 /**
  * @param {string} sabor
  */
-export default sabor => render({
+export default (sabor, id) => render({
     div: { class: 'flex pizza' },
-}, [
-    Pizza(sabor), CardBtn(sabor)
-]);
+}, [Pizza(sabor), CardBtn(id)]);
