@@ -2,7 +2,7 @@ import CardLink from "../components/CardLink.js";
 import { consumirAPI, Link, mapEntries, render } from "../lib7.js";
 
 const Container = await consumirAPI('api.json', ({ pizzas, template }) => {
-    const [ sabor_pizza, h2_sabor ] = template.home;
+    const [sabor_pizza, h2_sabor] = template.home;
 
     return mapEntries(pizzas, ([sabor, { sabores, valor }]) => render({
         div: {
@@ -17,7 +17,6 @@ const Container = await consumirAPI('api.json', ({ pizzas, template }) => {
 
 export default render({
     section: {
-        class: 'brd_nardo bs_neon2',
         id: 'container-pizzas',
     }
 }, [
