@@ -1,0 +1,15 @@
+.item_carrinho {
+    text-align: left;
+}
+
+.item_carrinho:is(p) {
+    border-bottom: 1px solid;
+}
+
+.span_valor {
+    float: right;
+}
+
+#linkBox {
+    margin-top: 55px;
+}

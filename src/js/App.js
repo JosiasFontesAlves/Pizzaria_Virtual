@@ -1,15 +1,13 @@
-import { SPA } from './lib7.js';
-import Pedido from './pages/Pedido.js';
-import Home from './pages/Home.js';
+import { AJAX, SPA } from './lib7.js';
+import routes from './routes.js';
 import setCarrinho from './setCarrinho.js';
 
 export default () => {
-    location.hash = '#home';
+    location.hash = '#pedido';
 
-    SPA({
-        '#home': Home,
-        '#pedido': Pedido
-    }, '#root');
+    AJAX('api.json', api => {
+        SPA(routes(api), '#root');
 
-    setCarrinho();
+        setCarrinho(api);
+    });
 }

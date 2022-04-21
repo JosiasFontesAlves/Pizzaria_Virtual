@@ -1,3 +1,12 @@
-import { render } from '../lib7.js';
+import { getEntries, Link, render, Span } from '../lib7.js';
 
-export default (...childs) => render({ p: { class: 'cardLink' } }, childs);
+export default (/** @type {string} */ txt, /** @type {{ [href: string]: string; }} */ link) => {
+    const [href, textContent] = getEntries(link)[0];
+
+    return render({
+        div: {
+            class: 'padd15',
+            id: 'card-link'
+        }
+    }, [Span(txt), Link(href, textContent, { class: 'link' })]);
+};

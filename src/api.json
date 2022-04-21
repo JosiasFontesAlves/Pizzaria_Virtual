@@ -1,5 +1,6 @@
 {
-    "carrinho": {},
+    "carrinho": {
+    },
     "pizzas": {
         "Tradicionais": {
             "valor": 25,
@@ -16,6 +17,7 @@
             "valor": 25,
             "sabores": [
                 "Banana",
+                "Brigadeiro",
                 "Chocolate",
                 "Morango",
                 "Prestígio",
@@ -32,32 +34,6 @@
                 "Nutella",
                 "Sorvete"
             ]
-        }
-    },
-    "template": {
-        "home": [
-            {
-                "p": {
-                    "class": "padd7 sabor_pizza"
-                }
-            },
-            {
-                "h2": {
-                    "class": "h2_sabor"
-                }
-            }
-        ],
-        "carrinho": {
-            "section": {
-                "class": "grid",
-                "id": "carrinho"
-            }
-        },
-        "valorTotal": {
-            "p": {
-                "class": "w50",
-                "id": "valorTotal"
-            }
         }
     }
 }

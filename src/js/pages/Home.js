@@ -1,25 +1,29 @@
-import CardLink from "../components/CardLink.js";
-import { consumirAPI, Link, mapEntries, render } from "../lib7.js";
+import { Lista, mapEntries, render } from '../lib7.js';
+import CardLink from '../components/CardLink.js';
 
-const Container = await consumirAPI('api.json', ({ pizzas, template }) => {
-    const [sabor_pizza, h2_sabor] = template.home;
-
-    return mapEntries(pizzas, ([sabor, { sabores, valor }]) => render({
+export default ({ pizzas }) => {
+    const Container = mapEntries(pizzas, ([pizza, { valor, sabores }]) => render({
         div: {
-            class: 'card_pizzas',
-            id: `pizzas-${sabor.toLowerCase()}`
+            class: 'grid',
+            id: 'container-sabores'
         }
     }, [
-        render(h2_sabor, `${sabor} - R$${valor}`),
-        ...sabores.map(pizza => render(sabor_pizza, pizza))
+        render({
+            h2: {
+                class: 'ttl_pizza w50'
+            }
+        }, `${pizza} - R$${valor}`),
+        Lista(`pizzas-${pizza}`, sabores, {
+            class: 'padd7 pizza'
+        })
     ]));
-});
 
-export default render({
-    section: {
-        id: 'container-pizzas',
-    }
-}, [
-    ...Container,
-    CardLink('Pronto para pedir? Clique ', Link('#pedido', 'aqui'))
-]);
+    return render({
+        div: {
+            id: 'container-pizzas'
+        }
+    }, [
+        ...Container,
+        CardLink('Pronto(a) para pedir? Clique ', { '#pedido': 'aqui!' })
+    ]);
+}

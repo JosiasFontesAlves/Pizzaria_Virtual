@@ -11,7 +11,7 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '4.2.7';
+let versão = '4.4';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} elem
@@ -224,12 +224,6 @@ export const menuLateral = (id, btn, toggle) =>
 export const templatr = (/** @type {HTMLElement[]} */ elems) => elems.forEach(tag => document.body.appendChild(tag));
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/** 
- * @param {{id: string}} tags - { id: texto }
- */
-export const texto = tags => Object.entries(tags).forEach(([tag, texto]) => document.getElementById(tag).textContent = texto);
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 export const Animatus = {
     /**
      * @param {string} id 
@@ -289,17 +283,19 @@ export const DropDown = (/** @type {string} */ id, /** @type {any[]} */ lista) =
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {{[local: string]: {[pesq: string]: string | number}}} args 
+ * @param {{[local: string]: string | number | {[pesq: string]: string | number}}} args 
  */
-export const replacer = args => {
+export const replacer = args =>
     Object.entries(args).forEach(([local, res]) => {
         const $local = document.querySelector(local);
 
-        Object.entries(res).forEach(
-            ([search, textContent]) => $local.textContent = $local.textContent.replace(search, String(textContent))
-        );
+        (typeof res === 'string' || typeof res === 'number')
+            ? $local.textContent = String(res)
+            : Object.entries(res).forEach(([search, textContent]) =>
+                $local.textContent = $local.textContent.replace(search, String(textContent))
+            );
     });
-} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {string} id 
@@ -360,7 +356,7 @@ export const render = (tag, conteúdo) => Component(tag, conteúdo);
  * @param {{[prop: string]: string}[]} props
  */
 export const SearchBox = (...props) => {
-    const searchBox = Component('section');
+    const searchBox = Component({ 'section': { ...props[2] } });
     searchBox.classList.add('searchBox');
 
     ['input', 'button'].map((el, i) => {
@@ -378,7 +374,7 @@ export const SearchBox = (...props) => {
  * @param {string} url 
  * @param {function} fn 
  */
-export const consumirAPI = async (url, fn) => {
+export const AJAX = async (url, fn) => {
     const api = await fetch(url);
     const res = await api.json();
 
@@ -388,8 +384,9 @@ export const consumirAPI = async (url, fn) => {
 /**
  * @param {{[hash: string]: HTMLElement}} pages
  * @param {string} parent - componente que será atualizado
+ * @param {(hash: string) => void} [fn] - CallBack opcional
  */
-export const SPA = (pages, parent) => {
+export const SPA = (pages, parent, fn) => {
     const $parent = document.querySelector(parent);
 
     const setParent = () => {
@@ -399,14 +396,18 @@ export const SPA = (pages, parent) => {
 
     setParent();
 
-    window.addEventListener('hashchange', setParent);
+    window.addEventListener('hashchange', () => {
+        setParent();
+
+        if (fn) fn(location.hash);
+    });
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string} local 
- * @param {HTMLElement[]} childs 
- */
-export const insertChilds = (local, childs) => document.querySelector(local).append(...childs);
+export const insertChilds = (/** @type {string} */ local, /** @type {HTMLElement[]} */ childs) => {
+    const $local = document.querySelector(local);
+
+    Array.isArray(childs) ? childs.forEach(child => $local.appendChild(child)) : $local.appendChild(childs);
+}
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -440,7 +441,7 @@ export const mapKeys = (obj, callBack) => Object.keys(obj).map(callBack);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {{[item: string]: any}} obj 
+ * @param {{[item: string]: any} | *[]} obj 
  * @param {(value: [string, any], index: number, array: [string, any][]) => any} callBack 
  */
 export const mapValues = (obj, callBack) => Object.values(obj).map(callBack);
@@ -516,11 +517,17 @@ export const Img = (src, alt, props) => {
     return img;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const toggle = (/** @type {{[elem: string]: string}} */ elems) =>
-    Object.entries(elems).forEach(([el, toggle]) => document.querySelector(el).classList.toggle(toggle));
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/**
+ * @param {{[elem: string]: string}} elems 
+ * @param {boolean} [force] 
+ */
+export const toggle = (elems, force) => {
+    Object.entries(elems).forEach(([el, toggle]) => {
+        force = document.querySelector(el).classList.toggle(toggle, force)
+    });
 
-export const getRandomNumber = (/** @type {number} */ numMax) => Math.floor(Math.random() * numMax);
+    return force;
+}
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -544,16 +551,15 @@ export const Burger = props => {
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * Retorna um item aleatório de um array
+ * Retorna um item aleatório de um array ou string
  */
 export const getRandomItem = (/** @type {string | any[]} */ arr) => arr[Math.floor(Math.random() * arr.length)];
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string} el 
- * @param {string[]} classes
- */
-export const addClass = (el, classes) => document.querySelector(el).classList.add(...classes);
+export const addClass = (/** @type {{[el: string]: string[]}} */ el) =>
+    Object.entries(el).forEach(([tag, classes]) => {
+        document.querySelectorAll(tag).forEach(item => item.classList.add(...classes));
+    });
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -571,17 +577,31 @@ export const Video = (src, props) => {
     return video;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const getSubstring = (/** @type {string} */ str, /** @type {string[]} */[start, end]) => str.substring(str.indexOf(start), str.indexOf(end));
+/**
+ * @param {string} str 
+ * @param {string | RegExp} start 
+ * @param {string} [end] 
+ */
+export const getSubstring = (str, start, end) =>
+    (typeof start === 'string')
+        ? end
+            ? str.substring(str.indexOf(start), str.indexOf(end))
+            : str.substring(str.indexOf(start))
+        : str.match(start)[0];
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {string} texto 
  * @param {{ [prop: string]: string; }} [props]
  */
-export const Span = (texto, props) => {
-    const span = Component({ span: { ...props } });
-    span.innerText = texto;
+export const Span = (texto, props) => Component({ span: { ...props } }, texto);
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-    return span;
-} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/**
+ * Adiciona um id numérico a uma classe CSS
+ * @param {string} classe 
+ * @param {string} id 
+ */
+export const addId = (classe, id) => [...document.getElementsByClassName(classe)].forEach((elem, i) => elem.id = `${id}-${i}`);
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2020 - ${new Date().getFullYear()}\nCriada por Josias Fontes Alves`);

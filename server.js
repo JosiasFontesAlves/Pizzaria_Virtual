@@ -9,7 +9,9 @@ app.use(express.static('src'));
 app.use(express.json());
 
 app.post('/api', (req, res) => {
-    writeFile('./src/api.json', JSON.stringify(req.body, null, 4), err => console.log(err ? err : ''));
+    writeFile('./src/api.json', JSON.stringify(req.body, null, 4), err => {
+        if (err) throw err;
+    });
 
     res.end();
 });

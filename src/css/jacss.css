@@ -87,6 +87,16 @@ td {
     backdrop-filter: blur(2px);
 }
 
+.blur4 {
+    background: #ffffff46;
+    backdrop-filter: blur(3px);
+}
+
+.blur5 {
+    background: linear-gradient(45deg, #ffffff8c, #7c7c7c8c);
+    backdrop-filter: blur(3px);
+}
+
 .br7 {
     border-radius: 7px;
 }
@@ -119,6 +129,10 @@ td {
     box-shadow: 3px 3px 10px #acacac;
 }
 
+.bs_neon4 {
+    box-shadow: 0 2px 7px #a0a0a08e;
+}
+
 .center {
     align-items: center;
     justify-content: center;
@@ -130,6 +144,7 @@ td {
 
 .flex {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .grid {
@@ -190,6 +205,10 @@ td {
 }
 
 /* Classes de função */
+
+.hover_float:hover {
+    transform: translateY(-2px);
+}
 
 .temesc {
     background: black;
