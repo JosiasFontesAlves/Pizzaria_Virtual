@@ -3,7 +3,7 @@ import routes from './routes.js';
 import setCarrinho from './setCarrinho.js';
 
 export default () => {
-    location.hash = '#pedido';
+    location.hash = '#home';
 
     AJAX('api.json', api => {
         SPA(routes(api), '#root');

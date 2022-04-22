@@ -1,4 +1,3 @@
-import Carrinho from './pages/Carrinho.js';
 import ContainerPizzas from './pages/Home.js';
 import Pedido from './pages/Pedido.js';
 

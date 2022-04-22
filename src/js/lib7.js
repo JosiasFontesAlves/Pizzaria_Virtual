@@ -11,7 +11,7 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '4.4';
+let versão = '4.4.3';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} elem
@@ -34,7 +34,6 @@ const Component = (elem, content) => {
  * @param {number} estilo 
  * @param {string | string[]} cor
  * @param {{ height?: number, value?: string, props?: {[prop: string]: string}, width?: number }} propsBtn - tamanho em px
- * 
  */
 export const Btn = (idBtn, estilo, cor, { height, value, props, width }) => {
     const setCor = (/** @type {number} */ i, /** @type {string | string[]} */ bg) => Array.isArray(cor) ? cor[i] : bg;
@@ -181,10 +180,10 @@ export const Tempus = {
     }
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/**
- * @param {string | string[]} id 
- */
-export const selek = id => Array.isArray(id) ? id.map(el => document.querySelector(el)) : document.querySelector(id);
+export const selek = (/** @type {string[]} */ ...elems) =>
+    (elems.length === 1)
+        ? document.querySelector(elems[0])
+        : elems.map(elem => document.querySelector(elem))
 
 /**
  * @param {string} id 
@@ -210,15 +209,6 @@ export const temEsc = (btn, elems, toggle, fn) => document.getElementById(btn).a
 
     if (fn) fn(ev);
 });
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-/**
- * @param {string} id - id do menu
- * @param {string} btn - Botão que será responsável pelo evento
- * @param {string} toggle - Classe CSS que será responsável por esconder o menu
- */
-export const menuLateral = (id, btn, toggle) =>
-    document.getElementById(btn).addEventListener('click', () => document.querySelector(id).classList.toggle(toggle));
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 export const templatr = (/** @type {HTMLElement[]} */ elems) => elems.forEach(tag => document.body.appendChild(tag));
@@ -403,7 +393,7 @@ export const SPA = (pages, parent, fn) => {
     });
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const insertChilds = (/** @type {string} */ local, /** @type {HTMLElement[]} */ childs) => {
+export const insertChilds = (/** @type {string} */ local, /** @type {HTMLElement[] | HTMLElement} */ childs) => {
     const $local = document.querySelector(local);
 
     Array.isArray(childs) ? childs.forEach(child => $local.appendChild(child)) : $local.appendChild(childs);

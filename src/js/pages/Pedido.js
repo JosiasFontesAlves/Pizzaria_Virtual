@@ -1,4 +1,4 @@
-import { mapValues, render, selekFn } from '../lib7.js';
+import { mapValues, render } from '../lib7.js';
 import CardPizza from '../components/CardPizza.js';
 import CardLink from '../components/CardLink.js';
 

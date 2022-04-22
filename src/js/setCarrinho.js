@@ -11,28 +11,35 @@ export default (/** @type {{}} */ api) => {
 
         const qtdePizzas = () => Number(spanPizza.textContent);
 
-        const fnBtn = {
-            menos: num => num > 0 ? num - 1 : 0,
-            mais: num => num + 1
+        const fnLocalName = {
+            a: () => {
+                if (location.hash === '#pedido') {
+                    const root = selek('#root');
+                    root.innerHTML = '';
+                    root.appendChild(Carrinho(api));
+
+                    api.carrinho = {};
+                }
+            },
+            button: () => {
+                const fnBtn = {
+                    menos: num => num > 0 ? num - 1 : 0,
+                    mais: num => num + 1
+                }
+
+                replacer({
+                    [`#${spanPizza.id}`]: fnBtn[getSubstring(target.className, /[m].+[s]/)](qtdePizzas())
+                });
+
+                carrinho[`${pizza.textContent}`] = qtdePizzas();
+
+                api.carrinho = carrinho;
+
+                httpPost('/api', api);
+            }
         }
 
-        if (target.localName === 'button') {
-            replacer({ [`#${spanPizza.id}`]: fnBtn[getSubstring(target.className, /[m].+[s]/)](qtdePizzas()) });
-
-            carrinho[`${pizza.textContent}`] = qtdePizzas();
-
-            api.carrinho = carrinho;
-
-            httpPost('/api', api);
-        };
-
-        if (target.localName === 'a' && target.href.includes('#pedido')) {
-            const root = selek('#root');
-            root.innerHTML = '';
-            root.appendChild(Carrinho(api));
-
-            api.carrinho = {};
-        }
+        if (fnLocalName[target.localName]) fnLocalName[target.localName]();
     };
 
     selekFn('#root', 'click', atualizarCarrinho);
