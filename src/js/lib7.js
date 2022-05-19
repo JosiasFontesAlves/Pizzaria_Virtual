@@ -11,7 +11,7 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '4.4.3';
+let versão = '4.4.5';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} elem
@@ -290,10 +290,10 @@ export const replacer = args =>
 /**
  * @param {string} id 
  * @param {string[]} lista 
- * @param {{[prop: string]: string}} [props]
+ * @param {...{[prop: string]: string}} [props]
  */
-export const Lista = (id, lista, props) => {
-    const $lista = Component('ul');
+export const Lista = (id, lista, ...props) => {
+    const $lista = Component({ ul: { ...props[1] } });
     $lista.id = id;
 
     lista.forEach((item, i) => {
@@ -301,7 +301,7 @@ export const Lista = (id, lista, props) => {
         li.id = `${id}-${i}`;
         li.append(item);
 
-        if (props) Object.entries(props).forEach(([prop, val]) => li.setAttribute(prop, val));
+        if (props) Object.entries(props[0]).forEach(([prop, val]) => li.setAttribute(prop, val));
 
         $lista.appendChild(li);
     });

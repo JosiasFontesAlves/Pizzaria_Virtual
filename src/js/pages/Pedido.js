@@ -5,15 +5,15 @@ import CardLink from '../components/CardLink.js';
 export default ({ pizzas }) => {
     let id = 0;
 
-    const $pizzas = mapValues(pizzas, ({ sabores, valor }) => {
-        return render({
+    const $pizzas = mapValues(pizzas, ({ sabores, valor }) => 
+        render({
             div: {
                 class: 'card_pizzas'
             }
-        }, sabores.map(
-            sabor => CardPizza(`${sabor} - R$${valor}`, id++)
-        ));
-    });
+        }, sabores.map(sabor => 
+            CardPizza(`${sabor} - R$${valor}`, id++)
+        ))
+    );
 
     return render({
         div: {
