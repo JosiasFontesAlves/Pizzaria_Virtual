@@ -1,29 +1,28 @@
-import { Lista, mapEntries, render } from '../lib7.js';
+import { mapEntries, render, Title } from '../lib7.js';
+import pizzas from '../pizzas.js';
 import CardLink from '../components/CardLink.js';
+import Pizza from '../components/Pizza.js';
 
-export default ({ pizzas }) => {
-    const Container = mapEntries(pizzas, ([pizza, { valor, sabores }]) => render({
-        div: {
-            class: 'grid',
-            id: 'container-sabores'
+const Container = mapEntries(pizzas, ([sabor, { valor, sabores }]) =>
+    render({
+        section: {
+            className: 'container grid padd5'
         }
     }, [
+        Title(2, `${sabor} - R$${valor}`, { className: 'ttl_pizza' }),
         render({
-            h2: {
-                class: 'ttl_pizza w50'
+            section: {
+                className: 'sabores'
             }
-        }, `${pizza} - R$${valor}`),
-        Lista(`pizzas-${pizza}`, sabores, {
-            class: 'padd7 pizza'
-        })
-    ]));
+        }, sabores.map(sabor => Pizza(sabor)))
+    ])
+);
 
-    return render({
-        div: {
-            id: 'container-pizzas'
-        }
-    }, [
-        ...Container,
-        CardLink('Pronto(a) para pedir? Clique ', { '#pedido': 'aqui!' })
-    ]);
-}
+export default render({
+    div: {
+        id: 'Home'
+    }
+}, [
+    ...Container,
+    CardLink({ '#pedido': 'Pronto(a) para pedir?' })
+]);

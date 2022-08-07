@@ -1,39 +1,47 @@
 * {
     font-family: 'roboto mono', sans-serif;
-    text-align: center;
+    text-shadow: var(--ghost_neon);
 }
 
 .link {
     color: black;
 }
 
-.link:hover, .btn_pizza:hover {
+.link:hover {
     color: blue;
 }
 
 header {
-    margin: 0 0 35px;
+    margin-top: 0;
 }
 
 .ttl_pizza {
-    border-bottom: 3px dashed;
+    border-bottom: 2px dashed;
 }
 
-.sabor {
+.subl_nardo .pizza {
     margin-left: 0;
-}
-
-.pizza:not(li) {
-    border-bottom: 1px solid;
 }
 
 .card_btn {
     margin-right: 0;
 }
 
-.btn_pizza {
+.btn {
     background: none;
     border: none;
+}
+
+.item {
+   
+}
+
+.item_sabor {
+    margin-left: 0;
+}
+
+.item_valor {
+    margin-right: 0;
 }
 
 footer {

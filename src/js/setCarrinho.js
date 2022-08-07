@@ -1,46 +1,28 @@
-import { getSubstring, httpPost, replacer, selek, selekFn } from './lib7.js';
-import Carrinho from './pages/Carrinho.js';
+import { insertChilds, mapEntries, render, Span } from './lib7.js';
+import Item from './components/Item.js';
 
-export default (/** @type {{}} */ api) => {
-    const carrinho = {};
+const valorTotal = [];
 
-    const atualizarCarrinho = ({ path, target }) => {
-        const [pizza, spanPizza] = [
-            path[2], path[1]
-        ].map(({ children }, i) => children[i]);
+export default hash => {
+    if (hash === '#carrinho') {
+        const Pizzas = mapEntries(JSON.parse(localStorage.getItem('pizzaria')), ([pizza, qtde]) => {
+            const [sabor, valor] = pizza.split('R$');
 
-        const qtdePizzas = () => Number(spanPizza.textContent);
+            valorTotal.push(Number(valor * qtde));
 
-        const fnLocalName = {
-            a: () => {
-                if (location.hash === '#pedido') {
-                    const root = selek('#root');
-                    root.innerHTML = '';
-                    root.appendChild(Carrinho(api));
+            return qtde > 0 ? Item(qtde, sabor, valor) : '';
+        });
 
-                    api.carrinho = {};
+        insertChilds(hash, [
+            ...Pizzas,
+            render({
+                div: {
+                    className: 'flex item padd5'
                 }
-            },
-            button: () => {
-                const fnBtn = {
-                    menos: num => num > 0 ? num - 1 : 0,
-                    mais: num => num + 1
-                }
-
-                replacer({
-                    [`#${spanPizza.id}`]: fnBtn[getSubstring(target.className, /[m].+[s]/)](qtdePizzas())
-                });
-
-                carrinho[`${pizza.textContent}`] = qtdePizzas();
-
-                api.carrinho = carrinho;
-
-                httpPost('/api', api);
-            }
-        }
-
-        if (fnLocalName[target.localName]) fnLocalName[target.localName]();
-    };
-
-    selekFn('#root', 'click', atualizarCarrinho);
-}
+            }, [
+                render({ b: { className: 'item_sabor' } }, 'Valor total: '),
+                Span(`R$${valorTotal.reduce((a, b) => a + b)}`, { className: 'item_valor' })
+            ])
+        ]);
+    }
+};

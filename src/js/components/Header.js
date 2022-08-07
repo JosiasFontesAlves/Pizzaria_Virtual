@@ -2,6 +2,6 @@ import { render, Title } from '../lib7.js';
 
 export default render({
     header: {
-        class: 'grid'
+        className: 'center flex'
     }
-}, Title('Pizzaria virtual'));
+}, Title(1, 'Pizzaria virtual', { id: 'ttl' }));

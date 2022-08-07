@@ -97,6 +97,10 @@ td {
     backdrop-filter: blur(3px);
 }
 
+.br5 {
+    border-radius: 5px;
+}
+
 .br7 {
     border-radius: 7px;
 }
@@ -113,16 +117,16 @@ td {
     border-radius: 50%;
 }
 
-.bs_neon {
-    box-shadow: 5px 5px 25px #acacac;
-}
-
 .brd_nardo {
     border: 1px solid var(--nardoGray);
 }
 
+.bs_neon {
+    box-shadow: 5px 5px 25px #acacac;
+}
+
 .bs_neon2 {
-    box-shadow: 5px 5px 15px #acacac;
+    box-shadow: 5px 5px 15px #acacac9f;
 }
 
 .bs_neon3 {
@@ -169,6 +173,14 @@ td {
 
 .padd15 {
     padding: 15px;
+}
+
+.subl_nardo {
+    border-bottom: 1px solid var(--nardoGray);
+}
+
+.txt_center {
+    text-align: center;
 }
 
 .vidro_neon {
