@@ -18,11 +18,11 @@ export default hash => {
         ...Pizzas,
         render({
             div: {
-                className: 'flex item padd5'
+                className: 'flex item padd5 w50'
             }
         }, [
             render({ b: { className: 'item_sabor' } }, 'Valor total: '),
-            Span(`R$${valorTotal.reduce((a, b) => a + b)}`, { className: 'item_valor' })
+            Span(`R$${valorTotal.reduce((a, b) => a + b, 0)}`, { className: 'item_valor' })
         ])
     ]);
 };

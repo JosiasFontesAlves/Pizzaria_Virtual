@@ -9,16 +9,27 @@
     * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap'); /* Quantico */
-@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap'); /* Michroma */
-@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap'); /* Electrolize */
-@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap'); /* Black Ops */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Press start 2P */
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap'); /* Ubuntu */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap'); /* Orbitron */
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap'); /* Work Sans */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap'); /* Roboto mono */
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+/* Quantico */
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+/* Michroma */
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+/* Electrolize */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+/* Black Ops */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Press start 2P */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
+/* Ubuntu */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+/* Orbitron */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap');
+/* Work Sans */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
+/* Roboto mono */
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 
+/* Silkscreen */
 * {
     margin: auto;
     transition: all .3s;
@@ -67,7 +78,7 @@ table,
 th,
 td {
     border: 1px solid;
-    padding: 15px;
+    padding: 10px;
 }
 
 /* classes utilitárias */
@@ -220,6 +231,10 @@ td {
 
 .hover_float:hover {
     transform: translateY(-2px);
+}
+
+.rotate90 {
+    transform: rotateX(90deg);
 }
 
 .temesc {

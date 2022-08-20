@@ -5,7 +5,7 @@ export default (/** @type {{ [href: string]: string; }} */ link) => {
 
     return render({
         div: {
-            className: 'padd15',
+            className: 'padd15 txt_center',
             id: 'card-link'
         }
     }, [
