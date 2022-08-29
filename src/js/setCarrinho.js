@@ -6,7 +6,7 @@ const valorTotal = [];
 export default hash => {
     if (hash !== '#carrinho') return;
 
-    const Pizzas = mapEntries(JSON.parse(localStorage.getItem('pizzaria')), ([pizza, qtde]) => {
+    const Pizzas = mapEntries(JSON.parse(sessionStorage.getItem('pizzaria')), ([pizza, qtde]) => {
         const [sabor, valor] = pizza.split('R$');
 
         valorTotal.push(Number(valor * qtde));

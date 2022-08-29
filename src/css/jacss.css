@@ -27,9 +27,7 @@
 /* Work Sans */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
 /* Roboto mono */
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 
-/* Silkscreen */
 * {
     margin: auto;
     transition: all .3s;
@@ -78,7 +76,7 @@ table,
 th,
 td {
     border: 1px solid;
-    padding: 10px;
+    padding: 15px;
 }
 
 /* classes utilitárias */
@@ -166,6 +164,11 @@ td {
     display: grid;
 }
 
+.oceanic_blur {
+    backdrop-filter: blur(2px);
+    background: #00ccffc9;
+}
+
 .padd3 {
     padding: 3px;
 }
@@ -231,10 +234,6 @@ td {
 
 .hover_float:hover {
     transform: translateY(-2px);
-}
-
-.rotate90 {
-    transform: rotateX(90deg);
 }
 
 .temesc {

@@ -10,13 +10,13 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '4.7.2';
+let versão = '4.7.3';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} tag 
  * @param {string | Node | Node[]} [childs]
  */
-export const Component = (tag, childs) => {
+export const render = (tag, childs) => {
     const $elem = document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]);
 
     if (typeof tag === 'object')
@@ -40,7 +40,7 @@ export const Btn = (idBtn, estilo, cor, { height, value, props, width }) => {
     const w25 = `width: ${width ?? 25}px;`, w25px = `width: ${width * 2.5}px;`;
 
     if (estilo === 7) {
-        const btn7 = Component({
+        const btn7 = render({
             button: {
                 id: idBtn,
                 ...props,
@@ -75,11 +75,13 @@ export const Btn = (idBtn, estilo, cor, { height, value, props, width }) => {
                 `background: ${setCor(0, cor)}; border: none; border-radius: ${h15} 0 0 ${h15}; height: ${h15}; width: ${width ?? 15}px;`
             ]
         },
-        [borda, botão] = ['div', 'button'].map(elem => Component({
-            [elem]: {
-                style: btn[elem][estilo]
-            }
-        }));
+        [borda, botão] = ['div', 'button'].map(elem =>
+            render({
+                [elem]: {
+                    style: btn[elem][estilo]
+                }
+            })
+        );
 
     borda.id = idBtn;
     botão.id = `${idBtn}-child`;
@@ -115,7 +117,7 @@ export const Tempus = {
      * @param {{[prop: string]: string}} [props]
      */
     relógio(estilo, props) {
-        const rel = Component({ p: { ...props } });
+        const rel = render({ p: { ...props } });
 
         setInterval(() => {
             const rlg = this.getRlg();
@@ -132,8 +134,7 @@ export const Tempus = {
      * @param {{[prop: string]: string}} [props]
      */
     calendário(estilo, props) {
-        const cal = Component({ p: { ...props } });
-
+        const cal = render({ p: { ...props } });
 
         setInterval(() => {
             const date = new Date();
@@ -152,7 +153,7 @@ export const Tempus = {
      * @param {{[prop: string]: string}} [props]
      */
     saudação(props) {
-        const sdc = Component({ p: { ...props } });
+        const sdc = render({ p: { ...props } });
 
         setInterval(() => {
             const hora = new Date().getHours();
@@ -167,7 +168,7 @@ export const Tempus = {
      * @param {number} vel
      */
     contador([start, end], vel) {
-        const res = Component('p'),
+        const res = render('p'),
             count = setInterval(() => (start <= end) ? res.textContent = String(start++) : clearInterval(count), vel);
 
         return res;
@@ -201,12 +202,12 @@ export const templatr = (/** @type {Node[]} */ ...childs) => document.querySelec
  * @param {{[prop: string]: string}} [propsChilds]
  */
 export const DropDown = (lista, props, propsChilds) => {
-    const drop = Component({
+    const drop = render({
         select: {
             ...props
         }
     }, lista.map(textContent =>
-        Component({ option: { textContent, ...propsChilds } })
+        render({ option: { textContent, ...propsChilds } })
     ));
 
     drop.classList.add('drop');
@@ -235,49 +236,42 @@ export const replacer = args =>
  * @param {{[prop: string]: string}} [propsChilds]
  */
 export const Lista = (lista, props, propsChilds) =>
-    Component({
+    render({
         ul: {
             ...props
         }
     }, lista.map(item =>
-        Component({ li: { ...propsChilds } }, item)
+        render({ li: { ...propsChilds } }, item)
     ));
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 export const Tabela = (/** @type {{}[]}*/ data,/** @type {{[prop: string]: string }} */ props) => {
-    const Thead = Component('thead', Object.keys(...data).map(item => Component('th', item)));
+    const Thead = render('thead', Object.keys(...data).map(item => render('th', item)));
 
     const items = Object.values(data).map((item) =>
-        Component('tr', Object.values(item).map(text => Component('td', text)))
+        render('tr', Object.values(item).map(text => render('td', text)))
     );
 
-    return Component({
+    return render({
         table: {
             ...props
         }
     }, [
         Thead,
-        Component('tbody', items)
+        render('tbody', items)
     ]);
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-/**
- * @param {{[tag: string]: {[prop: string]: string}} | string} tag
- * @param {HTMLElement | HTMLElement[] | string} [conteúdo]
- */
-export const render = (tag, conteúdo) => Component(tag, conteúdo);
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {{[prop: string]: string}[]} props
  */
 export const SearchBox = (...props) => {
-    const searchBox = Component({ 'section': { ...props[2] } });
+    const searchBox = render({ 'section': { ...props[2] } });
     searchBox.classList.add('searchBox');
 
     ['input', 'button'].forEach((el, i) => {
-        const child = Component({ [el]: props[i] });
+        const child = render({ [el]: props[i] });
 
         searchBox.appendChild(child);
     });
@@ -309,7 +303,7 @@ export const insertChilds = (/** @type {string} */ local, /** @type {HTMLElement
  * @param {{[prop: string]: string}} [props]
  */
 export const Link = (href, textContent, props) => {
-    const link = Component({ a: { ...props, href, textContent } });
+    const link = render({ a: { ...props, href, textContent } });
     link.classList.add('link');
 
     return link;
@@ -359,10 +353,10 @@ export const httpPost = (url, body) => fetch(url, {
  * @param {{[prop: string]: string}} [propsChilds]
  */
 export const LinkBar = (links, /** @type {{ [prop: string]: string; }} */ propsNav, /** @type {{ [prop: string]: string; }} */ propsChilds) => {
-    const linkBarr = Component({ nav: { ...propsNav } });
+    const linkBarr = render({ nav: { ...propsNav } });
 
     const $links = Object.entries(links).map(([href, textContent]) => {
-        const link = Component({
+        const link = render({
             a: {
                 ...propsChilds,
                 href, textContent
@@ -385,7 +379,7 @@ export const LinkBar = (links, /** @type {{ [prop: string]: string; }} */ propsN
  * @param {string} textContent
  * @param {{[prop: string]: string}} [props]
  */
-export const Title = (size, textContent, props) => Component({ [`h${size}`]: { ...props, textContent } });
+export const Title = (size, textContent, props) => render({ [`h${size}`]: { ...props, textContent } });
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -393,7 +387,7 @@ export const Title = (size, textContent, props) => Component({ [`h${size}`]: { .
  * @param {string} alt 
  * @param {{[prop: string]: string | number}} [props]
  */
-export const Img = (src, alt, props) => Component({ img: { ...props, src, alt } });
+export const Img = (src, alt, props) => render({ img: { ...props, src, alt } });
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -415,10 +409,10 @@ export const toggle = elems => {
  * @param {{[prop: string]: string}} [propsChilds]
  */
 export const Burger = (props, propsChilds) => {
-    const burger = Component({ div: { ...props, style: 'display: grid; gap: 2px;' } });
+    const burger = render({ div: { ...props, style: 'display: grid; gap: 2px;' } });
 
     Array.from({ length: 3 }, () => {
-        const btn = Component({ button: { ...propsChilds } });
+        const btn = render({ button: { ...propsChilds } });
         btn.classList.add('btn_burger');
 
         return btn;
@@ -433,12 +427,6 @@ export const Burger = (props, propsChilds) => {
  * Retorna um item aleatório de um array ou string
  */
 export const getRandomItem = (/** @type {string | any[]} */ arr) => arr[Math.floor(Math.random() * arr.length)];
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-export const addClass = (/** @type {{[el: string]: string[]}} */ el) =>
-    Object.entries(el).forEach(([tag, classes]) => {
-        document.querySelectorAll(tag).forEach(item => item.classList.add(...classes));
-    });
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -458,7 +446,7 @@ export const getSubstring = (str, start, end) =>
  * @param {string} texto 
  * @param {{ [prop: string]: string; }} [props]
  */
-export const Span = (texto, props) => Component({ span: { ...props } }, texto);
+export const Span = (texto, props) => render({ span: { ...props } }, texto);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -467,8 +455,7 @@ export const Span = (texto, props) => Component({ span: { ...props } }, texto);
  * @param {function} [fn]
  */
 export const Router = (routes, props, fn) => {
-    const router = Component({ div: { ...props } });
-
+    const router = render({ div: { ...props } });
     router.classList.add('router');
 
     const setContent = () => {
@@ -478,10 +465,10 @@ export const Router = (routes, props, fn) => {
 
     setContent();
 
-    window.addEventListener('hashchange', () => {
+    window.addEventListener('hashchange', ev => {
         setContent();
 
-        if (fn) fn(location.hash);
+        if (fn) fn(location.hash, ev);
     });
 
     return router;
@@ -489,16 +476,21 @@ export const Router = (routes, props, fn) => {
 
 /**
  * @param {any[]} arr 
- * @param {number} columns - quantidade de colunas da matriz
+ * @param {number} columns - divisão do array
+ * @param {string} key - chave do objeto
+ * @param {{ [prop: string]: string; }} [props]
  */
-export const paginatr = (arr, columns) => {
-    let ctrl = Math.ceil(arr.length / columns);
-
+export const paginatr = (arr, columns, key, props) => {
+    const Page = childs => render({ section: { ...props } }, childs);
     const pages = [];
 
-    while (columns) pages[--columns] = arr.splice(columns * ctrl);
+    let ctrl = Math.ceil(arr.length / columns);
 
-    return pages.filter(item => item.length > 0);
-}
+    while (columns) pages[--columns] = Page(arr.splice(columns * ctrl));
+
+    return pages
+        .filter(({ children }) => children.length > 0)
+        .reduce((acc, item, i) => ({ ...acc, [`${key + i}`]: item }), {});
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2020 - ${new Date().getFullYear()}\nCriada por Josias Fontes Alves`);
