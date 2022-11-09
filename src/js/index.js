@@ -17,21 +17,12 @@ setCarrinho();
 selekFn('#root', 'click', ev => {
     if (ev.target.localName !== 'button') return;
 
-    const sabor = getSubstring(ev.composedPath()[2].textContent, /\D+\d+/),
-        spanQtde = ev.composedPath()[1].children[1];
+    const [sabor, qtde] = mapEntries({
+        [ev.composedPath()[2].textContent]: /\D+\d+/,
+        [ev.composedPath()[1].textContent]: /\d+/
+    }, ([str, regex]) => getSubstring(str, regex));
 
-    const fnBtn = {
-        btn_menos: num => num > 0 ? num - 1 : 0,
-        btn_mais: num => num + 1
-    }
-
-    const [qtde, fn] = mapEntries({
-        [ev.target.className]: /btn_m\w+/, [spanQtde.textContent]: /\d+/
-    }, ([str, start]) => getSubstring(str, start));
-
-    const qtdePizzas = () => carrinho[sabor] = fnBtn[fn](Number(qtde));
-
-    spanQtde.textContent = qtdePizzas();
+    carrinho[sabor] = qtde;
 
     setCarrinho();
 });

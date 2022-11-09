@@ -1,8 +1,7 @@
-import { mapEntries, render } from '../lib7.js';
+import { Counter, mapEntries, render } from '../lib7.js';
 import CardLink from '../components/CardLink.js';
 import Pizza from '../components/Pizza.js';
 import pizzas from '../pizzas.js';
-import CardBtn from '../components/CardBtn.js';
 
 const Container = mapEntries(pizzas, ([, { valor, sabores }]) =>
     render({
@@ -16,7 +15,7 @@ const Container = mapEntries(pizzas, ([, { valor, sabores }]) =>
             }
         }, [
             Pizza(`${sabor} R$${valor}`),
-            CardBtn()
+            Counter({}, { className: 'card_btn' })
         ])
     ))
 );

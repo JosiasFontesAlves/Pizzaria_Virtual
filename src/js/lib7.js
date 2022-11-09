@@ -10,7 +10,7 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '4.7.3';
+let versão = '4.7.8';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} tag 
@@ -216,18 +216,11 @@ export const DropDown = (lista, props, propsChilds) => {
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {{[local: string]: string | number | {[pesq: string]: string | number}}} args 
+ * @param {string} str
+ * @param {string | RegExp} search
+ * @param {string | number} replace
  */
-export const replacer = args =>
-    Object.entries(args).forEach(([local, res]) => {
-        const $local = document.querySelector(local);
-
-        (typeof res === 'string' || typeof res === 'number')
-            ? $local.textContent = String(res)
-            : Object.entries(res).forEach(([search, textContent]) =>
-                $local.textContent = $local.textContent.replace(search, String(textContent))
-            );
-    });
+export const replacer = (str, search, replace) => str.replace(search, replace);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -476,7 +469,7 @@ export const Router = (routes, props, fn) => {
 
 /**
  * @param {any[]} arr 
- * @param {number} columns - divisão do array
+ * @param {number} childs - divisão do array
  * @param {string} key - chave do objeto
  * @param {{ [prop: string]: string; }} [props]
  */
@@ -491,6 +484,45 @@ export const paginatr = (arr, columns, key, props) => {
     return pages
         .filter(({ children }) => children.length > 0)
         .reduce((acc, item, i) => ({ ...acc, [`${key + i}`]: item }), {});
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+/**
+ * @param {{ [prop: string]: string; }} [propsBtn]
+ * @param {{ [prop: string]: string; }} [propsCounter] 
+ */
+export const Counter = (propsBtn, propsCounter) => {
+    const Btn = (className, textContent, onclick) => {
+        const btn = render({
+            button: {
+                ...propsBtn, onclick, textContent
+            }
+        });
+
+        btn.classList.add('counter_btn', className);
+
+        return btn;
+    }
+
+    const SpanBtn = render({ span: { className: 'span_counter' } }, '0');
+
+    const fn = btn => {
+        const setNum = {
+            decr: num => num > 0 ? num - 1 : 0,
+            incr: num => num + 1
+        }
+
+        SpanBtn.textContent = setNum[btn](Number(SpanBtn.textContent));
+    }
+
+    return render({
+        section: {
+            ...propsCounter
+        }
+    }, [
+        Btn('decr', '-', () => fn('decr')),
+        SpanBtn,
+        Btn('incr', '+', () => fn('incr'))
+    ]);
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 console.log(`Lib 7 v${versão} - Matsa \u00A9 2020 - ${new Date().getFullYear()}\nCriada por Josias Fontes Alves`);
