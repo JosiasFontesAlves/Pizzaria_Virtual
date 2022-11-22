@@ -6,13 +6,16 @@ const valorTotal = [];
 export default hash => {
     if (hash !== '#carrinho') return;
 
-    const Pizzas = mapEntries(JSON.parse(sessionStorage.getItem('pizzaria')), ([pizza, qtde]) => {
-        const [sabor, valor] = pizza.split('R$');
+    const Pizzas = mapEntries(
+        JSON.parse(sessionStorage.getItem('pizzaria')),
+        ([pizza, qtde]) => {
+            const [sabor, valor] = pizza.split(' R$');
 
-        valorTotal.push(Number(valor * qtde));
+            valorTotal.push(Number(valor * qtde));
 
-        return qtde > 0 ? Item(qtde, sabor, valor) : '';
-    });
+            return qtde > 0 ? Item(qtde, sabor, valor) : '';
+        }
+    ).filter(item => item !== '');
 
     insertChilds(hash, [
         ...Pizzas,

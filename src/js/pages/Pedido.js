@@ -1,9 +1,9 @@
-import { Counter, mapEntries, render } from '../lib7.js';
+import { Counter, mapValues, render } from '../lib7.js';
 import CardLink from '../components/CardLink.js';
 import Pizza from '../components/Pizza.js';
 import pizzas from '../pizzas.js';
 
-const Container = mapEntries(pizzas, ([, { valor, sabores }]) =>
+const Container = mapValues(pizzas, ({ valor, sabores }) =>
     render({
         section: {
             className: 'container'
