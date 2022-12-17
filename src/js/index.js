@@ -1,4 +1,4 @@
-import { getSubstring, mapEntries, selekFn, templatr } from './lib7.js';
+import { getSubstring, selekFn, templatr } from './lib7.js';
 import Header from './components/Header.js';
 import Root from './components/Root.js';
 import Footer from './components/Footer.js';
@@ -17,12 +17,10 @@ setCarrinho();
 selekFn('#root', 'click', ev => {
     if (ev.target.localName !== 'button') return;
 
-    const [sabor, qtde] = mapEntries({
-        [ev.composedPath()[2].textContent]: /\D+\d+/,
-        [ev.composedPath()[1].textContent]: /\d+/
-    }, ([str, regex]) => getSubstring(str, regex));
+    const { textContent } = ev.composedPath()[2],
+        [sabor, [, qtde]] = getSubstring(textContent, /\D+\d+/g);
 
-    carrinho[sabor] = qtde;
+    carrinho[sabor] = Number(qtde);
 
     setCarrinho();
 });

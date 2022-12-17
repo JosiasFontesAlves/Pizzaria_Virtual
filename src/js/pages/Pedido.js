@@ -14,7 +14,7 @@ const Container = mapValues(pizzas, ({ valor, sabores }) =>
                 className: 'flex padd5 subl_nardo'
             }
         }, [
-            Pizza(`${sabor} R$${valor}`),
+            Pizza(`${sabor} R$ ${valor}`),
             Counter({}, { className: 'card_btn' })
         ])
     ))
