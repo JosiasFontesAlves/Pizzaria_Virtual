@@ -8,4 +8,8 @@ export default Router({
     '#home': Home,
     '#pedido': Pedido,
     '#carrinho': Carrinho
-}, { id: 'root' }, hash => setCarrinho(hash));
+}, { id: 'root' }, hash => {
+    scrollTo(0, 0);
+
+    setCarrinho(hash);
+});

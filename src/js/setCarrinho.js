@@ -1,13 +1,13 @@
-import { insertChilds, mapEntries, render, Span } from './lib7.js';
+import { AJAX, insertChilds, mapEntries, render, selek, Span } from './lib7.js';
 import Item from './components/Item.js';
 
-const valorTotal = [];
-
-export default hash => {
+export default async hash => {
     if (hash !== '#carrinho') return;
 
+    const valorTotal = [];
+    
     const Pizzas = mapEntries(
-        JSON.parse(sessionStorage.getItem('pizzaria')),
+        await AJAX.get('carrinho.json'),
         ([pizza, qtde]) => {
             const [sabor, valor] = pizza.split(' R$');
 
@@ -16,6 +16,8 @@ export default hash => {
             return qtde > 0 ? Item(qtde, sabor, valor) : '';
         }
     ).filter(item => item !== '');
+
+    selek(hash).innerHTML = '';
 
     insertChilds(hash, [
         ...Pizzas,

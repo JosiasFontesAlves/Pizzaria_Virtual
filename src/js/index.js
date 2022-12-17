@@ -1,4 +1,4 @@
-import { getSubstring, selekFn, templatr } from './lib7.js';
+import { AJAX, getSubstring, selekFn, templatr } from './lib7.js';
 import Header from './components/Header.js';
 import Root from './components/Root.js';
 import Footer from './components/Footer.js';
@@ -9,8 +9,7 @@ location.hash = '#home';
 
 const carrinho = {};
 
-const setCarrinho = () =>
-    sessionStorage.setItem('pizzaria', JSON.stringify(carrinho));
+const setCarrinho = () => AJAX.set('/api', carrinho);
 
 setCarrinho();
 
