@@ -10,7 +10,7 @@
  * @author Josias Fontes Alves
 */
 
-let versão = '5.0.5';
+let versão = '4.7.8';
 
 /**
  * @param {{[tag: string]: {[prop: string]: string | number}} | string} tag 
@@ -20,10 +20,9 @@ export const render = (tag, childs) => {
     const $elem = document.createElement(typeof tag === 'string' ? tag : Object.keys(tag)[0]);
 
     if (typeof tag === 'object')
-        Object.entries(...Object.values(tag)).forEach(([prop, val]) => $elem[prop] = val);
+        for (const props of Object.values(tag)) Object.entries(props).forEach(([prop, val]) => $elem[prop] = val);
 
-    if (childs)
-        Array.isArray(childs) ? childs.forEach(item => $elem.append(item)) : $elem.append(childs);
+    if (childs) Array.isArray(childs) ? childs.map(item => $elem.append(item)) : $elem.append(childs);
 
     return $elem;
 }
@@ -101,76 +100,80 @@ export const Btn = (idBtn, estilo, cor, { height, value, props, width }) => {
     return borda;
 } /* ----- Lib de botões ----- */
 
-export const Tempus = (() => {
-    const Elem = (props, fn) => {
-        const elem = render({ p: { ...props } });
+export const Tempus = {
+    getCal: {
+        diaSem: ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'],
+        mês: ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+    },
+    getRlg: () => {
+        const date = new Date();
 
-        setInterval(() => elem.textContent = fn(), 1000);
+        return [
+            date.getHours(), date.getMinutes(), date.getSeconds()
+        ].map(num => num < 10 ? `0${num}` : num);
+    },
+    /**
+     * @param {number} estilo - 0: relógio completo; 1: horas e minutos;
+     * @param {{[prop: string]: string}} [props]
+     */
+    relógio(estilo, props) {
+        const rel = render({ p: { ...props } });
 
-        return elem;
+        setInterval(() => {
+            const rlg = this.getRlg();
+
+            if (estilo === 1) rlg.pop();
+
+            rel.textContent = rlg.join(':');
+        }, 1000);
+
+        return rel;
+    },
+    /**
+     * @param {number} estilo
+     * @param {{[prop: string]: string}} [props]
+     */
+    calendário(estilo, props) {
+        const cal = render({ p: { ...props } });
+
+        setInterval(() => {
+            const date = new Date();
+            const estilos = [
+                `${this.getCal.diaSem[date.getDay()]} ${date.getDate()} ${this.getCal.mês[date.getMonth()]} ${date.getFullYear()}`,
+                `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+            ];
+
+            cal.textContent = estilos[estilo];
+
+        }, 1000);
+
+        return cal;
+    },
+    /**
+     * @param {{[prop: string]: string}} [props]
+     */
+    saudação(props) {
+        const sdc = render({ p: { ...props } });
+
+        setInterval(() => {
+            const hora = new Date().getHours();
+
+            sdc.textContent = (hora <= 12) ? 'Bom dia!' : (hora >= 18) ? 'Boa noite!' : 'Boa tarde!';
+        }, 1000);
+
+        return sdc;
+    },
+    /**
+     * @param {number[]} startEnd
+     * @param {number} vel
+     */
+    contador([start, end], vel) {
+        const res = render('p'),
+            count = setInterval(() => (start <= end) ? res.textContent = String(start++) : clearInterval(count), vel);
+
+        return res;
     }
-
-    return {
-        /**
-         * @param {number} style 0 - 1
-         * @param {{[prop: string]: string}} [props]
-         */
-        clock: (style, props) =>
-            Elem(props, () => {
-                const rlg = new Date().toLocaleTimeString();
-
-                return style == 1 ? rlg.match(/(\d+:\d+)/)[0] : rlg;
-            }),
-        /**
-         * @param {number} style 0 - 2
-         * @param {{[prop: string]: string}} [props]
-         */
-        calendar: (style, props) => {
-            const getCal = {
-                day: {
-                    Sun: 'DOM', Mon: 'SEG', Tue: 'TER', Wed: 'QUA',
-                    Thu: 'QUI', Fri: 'SEX', Sat: 'SÁB'
-                },
-                month: {
-                    Jan: 'JAN', Feb: 'FEV', Mar: 'MAR', Apr: 'ABR',
-                    May: 'MAI', Jun: 'JUN', Jul: 'JUL', Aug: 'AGO',
-                    Sep: 'SET', Oct: 'OUT', Nov: 'NOV', Dec: 'DEZ'
-                }
-            };
-
-            return Elem(props, () => {
-                const [weekDay, month, day, year] = String(new Date()).match(/\w+/g);
-
-                const styles = [
-                    `${getCal.day[weekDay]} ${day} ${getCal.month[month]} ${year}`,
-                    `${day}/${getCal.month[month]}/${year}`,
-                    new Date().toLocaleDateString()
-                ];
-
-                return styles[style];
-            }, 1000);
-        },
-        /**
-         * @param {number} start
-         * @param {number} end
-         * @param {number} vel
-         * @param {{[prop: string]: string}} [props]
-         */
-        timer: ({ start, end }, vel = 1000, props) => {
-            const Timer = render({ p: { ...props } });
-
-            const setTimer = setInterval(() => {
-                end
-                    ? start < end ? start++ : clearInterval(setTimer)
-                    : start > 0 ? start-- : clearInterval(setTimer);
-
-                Timer.textContent = String(start);
-            }, vel);
-
-            return Timer;
-        }
-    }
-})(); /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 export const selek = (/** @type {string[]} */ ...elems) =>
     (elems.length === 1)
@@ -269,26 +272,16 @@ export const SearchBox = (...props) => {
     return searchBox;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-export const AJAX = {
-    get: async (/** @type {string} */ url) => {
-        const api = await fetch(url);
+/**
+ * @param {string} url 
+ * @param {function} fn 
+ */
+export const AJAX = async (url, fn) => {
+    const api = await fetch(url);
+    const res = await api.json();
 
-        return await api.json();
-    },
-    set: (/** @type {string} */ url, /** @type {{} | *[]} */ body) =>
-        fetch(url, {
-            body: JSON.stringify(body),
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST'
-        }),
-    update: async (/** @type {string} */ file, /** @type {string} */ url, /** @type {{[key: string]: *}} */ keys) => {
-        const api = await AJAX.get(file);
-
-        Object.entries(keys).forEach(([key, val]) => api[key] = val);
-
-        AJAX.set(url, api);
-    }
-}; /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    return fn(res);
+} /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 export const insertChilds = (/** @type {string} */ local, /** @type {HTMLElement[] | HTMLElement} */ childs) => {
     const $local = document.querySelector(local);
@@ -314,12 +307,14 @@ export const Link = (href, textContent, props) => {
  * @param {(value: [string, any], index: number, array: [string, any][]) => any} callBack 
  */
 export const mapEntries = (obj, callBack) => Object.entries(obj).map(callBack);
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {{[item: string]: any}} obj 
  * @param {(value: string, index: number, array: string[]) => any} callBack
  */
 export const mapKeys = (obj, callBack) => Object.keys(obj).map(callBack);
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {{[item: string]: any} | *[]} obj 
@@ -336,12 +331,14 @@ export const getValues = (/** @type {{ [s: string]: any; } | ArrayLike<any>} */ 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {{}} obj 
- * @param {(previousValue: {}, currentValue: [string, any], currentIndex: number, array: [string, any][])} callBack 
- * @param {*} initialValue
+ * @param {string} url 
+ * @param {{} | *[]} body 
  */
-export const reduceEntries = (obj, callBack, initialValue) => Object.entries(obj).reduce(callBack, initialValue);
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+export const httpPost = (url, body) => fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+}); /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
  * @param {{[href: string]: string}} links 
@@ -435,7 +432,7 @@ export const getSubstring = (str, start, end) =>
         ? end
             ? str.substring(str.indexOf(start), str.indexOf(end))
             : str.substring(str.indexOf(start))
-        : str.match(start);
+        : str.match(start)[0];
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
@@ -446,7 +443,7 @@ export const Span = (texto, props) => render({ span: { ...props } }, texto);
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {{[hash: string]: HTMLElement}} routes
+ * @param {{[hash: string]: HTMLElement}} routes 
  * @param {{ [prop: string]: string; }} [props]
  * @param {function} [fn]
  */
@@ -455,68 +452,38 @@ export const Router = (routes, props, fn) => {
     router.classList.add('router');
 
     const setContent = () => {
-        const { hash, pathname, search } = location;
-        const route = search ? pathname + search : pathname;
-
         router.innerHTML = '';
-        router.append(routes[hash || route]);
+        router.append(routes[location.hash]);
     }
 
     setContent();
 
-    window.addEventListener('click', ev => {
-        if (ev.target.localName !== 'a') return;
-
-        const getRoute = ev.target.href.match(/\/[^\/]+$/)[0];
-
-        if (!Object.keys(routes).includes(getRoute)) return; 
-
-        ev.preventDefault();
-
-        history.replaceState('', '', ev.target.href);
-
+    window.addEventListener('hashchange', ev => {
         setContent();
 
-        if (fn) fn(location, ev);
+        if (fn) fn(location.hash, ev);
     });
 
     return router;
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
- * @param {HTMLElement[]} arr 
+ * @param {any[]} arr 
  * @param {number} childs - divisão do array
  * @param {string} key - chave do objeto
  * @param {{ [prop: string]: string; }} [props]
- * @param {{ [prop: string]: string; }} [propsLinks]
  */
-export const paginatr = (arr, columns, key, props, propsLinks) => {
-    const Page = childs => render({ section: { ...props } }, childs),
-        Link = (href, textContent) =>
-            render({
-                a: {
-                    href,
-                    ...propsLinks
-                }
-            }, textContent + 1);
-
-    const pages = [], $arr = [...arr];
+export const paginatr = (arr, columns, key, props) => {
+    const Page = childs => render({ section: { ...props } }, childs);
+    const pages = [];
 
     let ctrl = Math.ceil(arr.length / columns);
 
-    while (columns) pages[--columns] = Page($arr.splice(columns * ctrl));
+    while (columns) pages[--columns] = Page(arr.splice(columns * ctrl));
 
-    const routes = pages
+    return pages
         .filter(({ children }) => children.length > 0)
         .reduce((acc, item, i) => ({ ...acc, [`${key + i}`]: item }), {});
-
-    const Links = render({
-        nav: {
-            className: 'nav_paginatr'
-        }
-    }, Object.keys(routes).map(Link));
-
-    return [routes, Links];
 } /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /**
