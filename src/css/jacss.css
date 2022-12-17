@@ -257,6 +257,10 @@ td {
     transform: translateX(-250px);
 }
 
+.y100 {
+    transform: translateY(-100vw);
+}
+
 .z45 {
     transform: rotateZ(45deg);
 }
