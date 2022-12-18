@@ -455,16 +455,31 @@ export const Router = (routes, props, fn) => {
     router.classList.add('router');
 
     const setContent = () => {
+        const { hash, pathname, search } = location;
+        const route = search ? pathname + search : pathname;
+
         router.innerHTML = '';
-        router.append(routes[location.hash]);
+        router.append(routes[hash || route] ?? routes['/']);
     }
 
     setContent();
 
-    window.addEventListener('hashchange', ev => {
+    window.addEventListener('hashchange', setContent);
+
+    window.addEventListener('click', ev => {
+        if (ev.target.localName !== 'a') return;
+
+        const getRoute = ev.target.href.match(/\/[^\/]+$/)[0];
+
+        if (!Object.keys(routes).includes(getRoute)) return;
+
+        ev.preventDefault();
+
+        history.replaceState('', '', ev.target.href);
+
         setContent();
 
-        if (fn) fn(location.hash, ev);
+        if (fn) fn(location, ev);
     });
 
     return router;

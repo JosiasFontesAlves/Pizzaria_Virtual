@@ -197,6 +197,10 @@ td {
     text-align: center;
 }
 
+.txt_shadow {
+    text-shadow: var(--ghost_neon);
+}
+
 .vidro_neon {
     backdrop-filter: blur(5px);
     background: var(--vidro);
