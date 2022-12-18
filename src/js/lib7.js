@@ -175,7 +175,7 @@ export const Tempus = (() => {
 export const selek = (/** @type {string[]} */ ...elems) =>
     (elems.length === 1)
         ? document.querySelector(elems[0])
-        : elems.map(elem => document.querySelector(elem))
+        : elems.map(elem => document.querySelector(elem));
 
 /**
  * @param {string} id 
@@ -494,13 +494,7 @@ export const Router = (routes, props, fn) => {
  */
 export const paginatr = (arr, columns, key, props, propsLinks) => {
     const Page = childs => render({ section: { ...props } }, childs),
-        Link = (href, textContent) =>
-            render({
-                a: {
-                    href,
-                    ...propsLinks
-                }
-            }, textContent + 1);
+        Link = (href, textContent) => render({ a: { href, ...propsLinks } }, textContent + 1);
 
     const pages = [], $arr = [...arr];
 
@@ -527,12 +521,7 @@ export const paginatr = (arr, columns, key, props, propsLinks) => {
  */
 export const Counter = (propsBtn, propsCounter) => {
     const Btn = (className, textContent, onclick) => {
-        const btn = render({
-            button: {
-                ...propsBtn, onclick, textContent
-            }
-        });
-
+        const btn = render({ button: { ...propsBtn, onclick, textContent } });
         btn.classList.add('counter_btn', className);
 
         return btn;
@@ -550,9 +539,7 @@ export const Counter = (propsBtn, propsCounter) => {
     }
 
     return render({
-        section: {
-            ...propsCounter
-        }
+        section: { ...propsCounter }
     }, [
         Btn('decr', '-', () => fn('decr')),
         SpanBtn,
