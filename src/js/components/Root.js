@@ -1,3 +1,15 @@
-import { render } from '../lib7.js';
+import { Router } from '../lib7.js';
+import Home from '../pages/Home.js';
+import Pedido from '../pages/Pedido.js';
+import Carrinho from '../pages/Carrinho.js';
+import setCarrinho from '../setCarrinho.js';
 
-export default render({ div: { id: 'root' } });
+export default Router({
+    '#home': Home,
+    '#pedido': Pedido,
+    '#carrinho': Carrinho
+}, { id: 'root' }, hash => {
+    scrollTo(0, 0);
+
+    setCarrinho(hash);
+});

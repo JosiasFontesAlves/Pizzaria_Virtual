@@ -1,46 +1,33 @@
-import { getSubstring, httpPost, replacer, selek, selekFn } from './lib7.js';
-import Carrinho from './pages/Carrinho.js';
+import { AJAX, insertChilds, mapEntries, render, selek, Span } from './lib7.js';
+import Item from './components/Item.js';
 
-export default (/** @type {{}} */ api) => {
-    const carrinho = {};
+export default async hash => {
+    if (hash !== '#carrinho') return;
 
-    const atualizarCarrinho = ({ path, target }) => {
-        const [pizza, spanPizza] = [
-            path[2], path[1]
-        ].map(({ children }, i) => children[i]);
+    const valorTotal = [];
+    
+    const Pizzas = mapEntries(
+        await AJAX.get('carrinho.json'),
+        ([pizza, qtde]) => {
+            const [sabor, valor] = pizza.split(' R$');
 
-        const qtdePizzas = () => Number(spanPizza.textContent);
+            valorTotal.push(Number(valor * qtde));
 
-        const fnLocalName = {
-            a: () => {
-                if (location.hash === '#pedido') {
-                    const root = selek('#root');
-                    root.innerHTML = '';
-                    root.appendChild(Carrinho(api));
-
-                    api.carrinho = {};
-                }
-            },
-            button: () => {
-                const fnBtn = {
-                    menos: num => num > 0 ? num - 1 : 0,
-                    mais: num => num + 1
-                }
-
-                replacer({
-                    [`#${spanPizza.id}`]: fnBtn[getSubstring(target.className, /[m].+[s]/)](qtdePizzas())
-                });
-
-                carrinho[`${pizza.textContent}`] = qtdePizzas();
-
-                api.carrinho = carrinho;
-
-                httpPost('/api', api);
-            }
+            return qtde > 0 ? Item(qtde, sabor, valor) : '';
         }
+    ).filter(item => item !== '');
 
-        if (fnLocalName[target.localName]) fnLocalName[target.localName]();
-    };
+    selek(hash).innerHTML = '';
 
-    selekFn('#root', 'click', atualizarCarrinho);
-}
+    insertChilds(hash, [
+        ...Pizzas,
+        render({
+            div: {
+                className: 'flex item padd5 w50'
+            }
+        }, [
+            render({ b: { className: 'item_sabor' } }, 'Valor total: '),
+            Span(`R$${valorTotal.reduce((a, b) => a + b, 0)}`, { className: 'item_valor' })
+        ])
+    ]);
+};

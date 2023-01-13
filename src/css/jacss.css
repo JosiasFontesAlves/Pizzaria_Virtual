@@ -9,15 +9,24 @@
     * *        * *        * *     * *           * *            * *            * * * * * * * * *     * *             * * 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap'); /* Quantico */
-@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap'); /* Michroma */
-@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap'); /* Electrolize */
-@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap'); /* Black Ops */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Press start 2P */
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap'); /* Ubuntu */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap'); /* Orbitron */
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap'); /* Work Sans */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap'); /* Roboto mono */
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+/* Quantico */
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+/* Michroma */
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+/* Electrolize */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+/* Black Ops */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Press start 2P */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
+/* Ubuntu */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+/* Orbitron */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap');
+/* Work Sans */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
+/* Roboto mono */
 
 * {
     margin: auto;
@@ -117,16 +126,16 @@ td {
     border-radius: 50%;
 }
 
-.bs_neon {
-    box-shadow: 5px 5px 25px #acacac;
-}
-
 .brd_nardo {
     border: 1px solid var(--nardoGray);
 }
 
+.bs_neon {
+    box-shadow: 5px 5px 25px #acacac;
+}
+
 .bs_neon2 {
-    box-shadow: 5px 5px 15px #acacac;
+    box-shadow: 5px 5px 15px #acacac9f;
 }
 
 .bs_neon3 {
@@ -155,6 +164,11 @@ td {
     display: grid;
 }
 
+.oceanic_blur {
+    backdrop-filter: blur(2px);
+    background: #00ccffc9;
+}
+
 .padd3 {
     padding: 3px;
 }
@@ -181,6 +195,10 @@ td {
 
 .txt_center {
     text-align: center;
+}
+
+.txt_shadow {
+    text-shadow: var(--ghost_neon);
 }
 
 .vidro_neon {
@@ -241,6 +259,10 @@ td {
 
 .x250 {
     transform: translateX(-250px);
+}
+
+.y100 {
+    transform: translateY(-100vw);
 }
 
 .z45 {

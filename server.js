@@ -1,5 +1,5 @@
 import express from 'express';
-import { writeFile } from 'fs';
+import { writeFileSync } from 'fs';
 
 const app = express();
 
@@ -9,9 +9,7 @@ app.use(express.static('src'));
 app.use(express.json());
 
 app.post('/api', (req, res) => {
-    writeFile('./src/api.json', JSON.stringify(req.body, null, 4), err => {
-        if (err) throw err;
-    });
+    writeFileSync('./src/carrinho.json', JSON.stringify(req.body, null, 4));
 
     res.end();
 });
